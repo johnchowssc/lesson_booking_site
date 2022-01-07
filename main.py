@@ -66,5 +66,12 @@ def book_slot(slot_id):
         return flask.redirect(flask.url_for("get_calendar"))
     return flask.render_template("slot.html", form=form)
 
+@app.route("/delete/<int:slot_id>")
+def delete_slot(slot_id):
+    slot = Slot.query.get(slot_id)
+    db.session.delete(slot)
+    db.session.commit()
+    return flask.redirect(flask.url_for('get_calendar'))
+
 if __name__ == "__main__":
     app.run(debug=True)
