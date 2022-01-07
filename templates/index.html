@@ -1,0 +1,32 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Slots
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+  
+        <h1 class="pt-5 pb-2">Slots</h1>
+  
+        <p class="lead">This is a test site for calendar</p>
+  
+        {% for slot in all_slots %}
+        <div>
+            <p>{{slot.date}} at {{slot.time}} for {{slot.name}}</p>
+        </div>
+        {% endfor %}
+
+        {{ wtf.quick_form(form) }}
+  
+      </div>
+    </div>
+  </div>
+
+ 
+
+{% endblock %}
