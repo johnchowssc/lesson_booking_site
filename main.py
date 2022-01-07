@@ -9,7 +9,10 @@ import dotenv
 import flask_sqlalchemy
 import datetime
 
-## Import environment variables
+## Import forms
+import forms
+
+## Initialise environment variables
 dotenv.load_dotenv()
 
 ## Initialise Flask
@@ -34,29 +37,34 @@ class Slot(db.Model):
 
 db.create_all()
 
-
-## Configure forms
-class SlotForm(flask_wtf.FlaskForm):
-    date = wtforms.DateField("Slot Date", format='%Y-%m-%d', default=datetime.datetime.now(), validators=[wtforms.validators.DataRequired()])
-    time = wtforms.TimeField("Slot Time", format='%H:%M', default=datetime.datetime.now(), validators=[wtforms.validators.DataRequired()])
-    name = wtforms.StringField("Name")
-    submit = wtforms.SubmitField('Create')
-
 ## Routes
 @app.route("/", methods=["Get","POST"])
 def get_calendar():
     slots = Slot.query.all()
-    form = SlotForm()
+    return flask.render_template("index.html", all_slots=slots)
+
+@app.route("/create", methods=["Get","POST"])
+def create_slot():
+    form = forms.SlotForm()
     if form.validate_on_submit():
         new_slot = Slot(
             date = form.date.data,
-            time = form.time.data,
-            name = form.name.data
+            time = form.time.data
         )
         db.session.add(new_slot)
         db.session.commit()
         return flask.redirect(flask.url_for("get_calendar"))
-    return flask.render_template("index.html", form=form, all_slots=slots)
+    return flask.render_template("slot.html", form=form)
+
+@app.route("/book/<int:slot_id>", methods=["GET", "POST"])
+def book_slot(slot_id):
+    form = forms.BookingForm()
+    slot = Slot.query.get(slot_id)
+    if form.validate_on_submit():
+        slot.name = form.name.data
+        db.session.commit()
+        return flask.redirect(flask.url_for("get_calendar"))
+    return flask.render_template("slot.html", form=form)
 
 if __name__ == "__main__":
     app.run(debug=True)
