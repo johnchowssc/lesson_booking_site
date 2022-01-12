@@ -1,0 +1,48 @@
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-lg-offset-4 mx-auto">
+      
+                <h1 class="pt-5 pb-2">Sydney Sabre Lesson Slots</h1>
+      
+                <p class="lead">Available Lesson Slots</p> --> -->
+                
+                <!-- loop through all_slots list, use Jinja filter to sort on two attributes -->
+                {% for slot in all_slots|sort(attribute='date,time') %} 
+                <div>
+                    <p><a href="{{ url_for('book_slot', slot_id=slot.id) }}">{{slot.date.strftime("%A, %-d %B %Y")}} at {{slot.time.strftime("%H:%M")}} for {{slot.name}}</a> <a href="{{url_for('delete_slot', slot_id=slot.id) }}">✘</a></p>
+                </div>
+                {% endfor %}
+                <div class="clearfix">
+                    <a class="btn btn-primary float-right" href="{{url_for('create_slot')}}">Create New Slot</a>
+                </div> 
+            </div>
+        </div>
+</div>
+
+
+# import flask
+
+# import os
+# import dotenv
+# import flask_sqlalchemy
+# import datetime
+
+# ## Import forms
+# import forms
+
+# ## Initialise environment variables from .env file.
+# dotenv.load_dotenv()
+
+# ## Initialise Flask
+# app = flask.Flask(__name__)
+# app.config['SECRET_KEY'] = os.getenv("APP_SECRET_KEY")
+
+## Initialise Bootstrap
+# flask_bootstrap.Bootstrap(app)
+
+# ## Initialise DB
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///bookings.db") ## Use Heroku Postgres, or if not found, e.g. local, SQLite
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# db = flask_sqlalchemy.SQLAlchemy(app)
+
+# db.create_all()

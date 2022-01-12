@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Create Slots
+{% endblock %}
+
+{% block content %}
+  <h1>Create a slot</h1>
+  <p>Enter slot details below</p>
+  <form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.date.label }}<br>
+      {{ form.date(size=32) }}<br>
+      {% for error in form.date.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>
+      {{ form.time.label }}<br>
+      {{ form.time(size=32) }}<br>
+      {% for error in form.time.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+  </form>
+
+{% endblock %}
