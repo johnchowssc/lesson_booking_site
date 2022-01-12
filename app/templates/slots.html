@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Create Slots
+{% endblock %}
+
+{% block content %}
+  <h1>Create Slots</h1>
+  <p>Enter day to create slots</p>
+  <form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.date.label }}<br>
+      {{ form.date(size=32) }}<br>
+    </p>
+    <p>
+      {{ form.start_time.label }}<br>
+      {{ form.start_time(size=2) }}<br>
+    </p>
+    <p>
+      {{ form.end_time.label }}<br>
+      {{ form.end_time(size=2) }}<br>
+    </p>
+    <p>
+      {{ form.interval.label }}<br>
+      {{ form.interval(size=2) }}<br>
+    </p>
+    <p>{{ form.submit() }}</p>
+  </form>
+
+{% endblock %}
