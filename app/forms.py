@@ -5,7 +5,7 @@ from datetime import datetime
 
 ## Configure forms
 class LoginForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
@@ -20,7 +20,6 @@ class BookingForm(FlaskForm):
     # name = SelectField(label="Username", validators=[DataRequired()])
     submit = SubmitField("Book")
 
-## WTForm for registering users
 class RegisterUserForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired()])

@@ -1,10 +1,32 @@
 import datetime
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, send_from_directory, abort
 from app import app, db
 from app.forms import LoginForm, SlotForm, BookingForm, RegisterUserForm, SlotsForm
 from app.models import User, Slot
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
+from functools import wraps
+import os
+
+def admin_only(function):
+    wraps(function)
+    def decorated_function(*args, **kwargs):
+        try:
+            if current_user.is_admin != True:
+                print("Not an admin")
+                return abort(403)
+        except:
+            print("Not logged in")
+            return abort(403) #Not logged in
+        else:
+            return function(*args, **kwargs)
+    decorated_function.__name__ = function.__name__
+    return decorated_function        
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
@@ -22,6 +44,7 @@ def register():
             new_user = User(
             name = form.name.data,
             email = form.email.data,
+            is_admin = False,
             )
             new_user.set_password(password=form.password.data)
             db.session.add(new_user)
@@ -38,11 +61,11 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        flash('Login requested for user {}, remember_me={}'.format(
-            form.name.data, form.remember_me.data
+        flash('Login requested for email {}, remember_me={}'.format(
+            form.email.data, form.remember_me.data
             )
         )
-        user = User.query.filter_by(name=form.name.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
         if not user:
             flash("User doesn't exist")
         elif not user.check_password(password=form.password.data):
@@ -54,6 +77,7 @@ def login():
     return render_template("login.html", form=form)
 
 @app.route("/create", methods=["Get","POST"])
+@admin_only
 def create_slot():
     form = SlotForm()
     if form.validate_on_submit():
@@ -85,6 +109,7 @@ def logout():
     return redirect (url_for('index'))
 
 @app.route('/delete_slot/<slot_id>')
+@admin_only
 def delete_slot(slot_id):
     slot = Slot.query.get(slot_id)
     db.session.delete(slot)
@@ -92,6 +117,7 @@ def delete_slot(slot_id):
     return redirect(url_for('index'))
 
 @app.route('/create_slots', methods=["Get","POST"])
+@admin_only
 def create_slots():
     form = SlotsForm()
     if form.validate_on_submit():
