@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}
-Sydney Sabre Lessons 
+Available Slots 
 {% endblock %}
 
 {% block content %}
     <div class="container">
         <h1 class="text-gray-400 my-2 text-3xl font-bold">{{ self.title() }}</h1>
-        <p class="text-gray-400 font-bold">Available Slots</p>
         {% for slot in all_slots%}
         <div class="flex mx-auto my-4">
             <div>

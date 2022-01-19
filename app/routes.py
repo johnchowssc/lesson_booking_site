@@ -49,6 +49,11 @@ def register():
             new_user.set_password(password=form.password.data)
             db.session.add(new_user)
             db.session.commit()
+            # If this is the first user, make admin
+            if new_user.id == 1:
+                new_user.make_admin()
+                db.session.commit()
+
             login_user(new_user)
         except:
             flash("Email already exists")

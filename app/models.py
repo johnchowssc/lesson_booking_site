@@ -17,11 +17,16 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
 
-# Tells Python how to print objects of this class.
+    def make_admin(self):
+        self.is_admin = True
+    
+    def remove_admin(self):
+        self.is_admin = False
+
+    # Tells Python how to print objects of this class.
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '<User {}>'.format(self.email)
 
 class Slot(db.Model):
     __tablename__ = "slots"
