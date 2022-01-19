@@ -1,0 +1,22 @@
+{
+  "name": "booking",
+  "version": "1.0.0",
+  "description": "Lesson Booking for Sydney Sabre",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnchowssc/lesson_booking_site.git"
+  },
+  "author": "John Chow",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnchowssc/lesson_booking_site/issues"
+  },
+  "homepage": "https://github.com/johnchowssc/lesson_booking_site#readme",
+  "dependencies": {
+    "tailwindcss": "^3.0.15"
+  }
+}
