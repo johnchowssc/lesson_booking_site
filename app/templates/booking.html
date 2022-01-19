@@ -5,18 +5,23 @@ Book Slot
 {% endblock %}
 
 {% block content %}
-  <h1>Book Lesson in Slot</h1>
-  <p>Enter student details below</p>
-  <form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <p>
-      {{ form.name.label }}<br>
-      {{ form.name }}<br>
-      {% for error in form.name.errors %}
-      <span style="color: red;">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>{{ form.submit() }}</p>
-  </form>
-
+    <div class="container">
+        <h1 class="text-gray-400 my-2 text-3xl font-bold">{{ self.title() }}</h1>
+        <p class="text-gray-400">Enter student details</p>
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="my-2">
+                <p class="text-white">
+                    {{ form.name.label }}
+                </p>
+                <p>
+                    {{ form.name }}
+                </p>
+                {% for error in form.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <button class="bg-blue-400 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded">{{ form.submit() }}</button>
+        </form>
+    </div>
 {% endblock %}
