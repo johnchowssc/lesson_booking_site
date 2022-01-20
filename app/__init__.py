@@ -21,7 +21,7 @@ from app import routes, models
 # Create customized model view class
 class MyModelView(ModelView):
     def is_accessible(self):
-        return current_user.is_authenticated
+        return current_user.is_admin
 
 admin.add_view(MyModelView(models.User, db.session))
 admin.add_view(MyModelView(models.Slot, db.session))
