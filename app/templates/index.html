@@ -44,6 +44,14 @@ Available Slots
             {% endif %}
         </div>
         {% endfor%}
+        <div class="inline-flex">
+            <a class="bg-gray-800 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded-l" href="{{url_for('show_date', date=prev_date)}}">
+              Prev
+            </a>
+            <a class="bg-gray-800 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded-r" href="{{url_for('show_date', date=next_date)}}">
+              Next
+            </a>
+          </div>
     </div>
 {% endblock %}
 
