@@ -34,6 +34,9 @@ class Slot(db.Model):
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
     name = db.Column(db.String(250), nullable=True)
+    comment = db.Column(db.String(500), nullable=True)
+    paid = db.Column(db.Boolean, default=False, nullable=True)
+    completed = db.Column(db.Boolean, default=False, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):

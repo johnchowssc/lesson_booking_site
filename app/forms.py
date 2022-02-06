@@ -1,5 +1,6 @@
+from email.policy import default
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, TimeField, SelectField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, TimeField, SelectField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired 
 from datetime import datetime
 
@@ -17,7 +18,9 @@ class SlotForm(FlaskForm):
 
 class BookingForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
-    # name = SelectField(label="Username", validators=[DataRequired()])
+    comment = TextAreaField("Comment", validators=[])
+    paid = BooleanField("Paid", default=False, validators=[])
+    completed = BooleanField("Completed", default=False, validators=[])
     submit = SubmitField("Book")
 
 class RegisterUserForm(FlaskForm):

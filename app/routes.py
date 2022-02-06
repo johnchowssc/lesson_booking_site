@@ -36,7 +36,6 @@ def favicon():
 def index():
     range = 14
     today_date = datetime.date.today()
-    print(today_date)
     today_plus_range = today_date + datetime.timedelta(days=range)
     today_minus_range = today_date - datetime.timedelta(days=range)
     slots = Slot.query.filter(and_(Slot.date <= today_plus_range, Slot.date >= today_minus_range)) #Show slots on current date +/- range days.
@@ -53,7 +52,6 @@ def show_date(date):
     range = 14
     date = datetime.datetime.strptime(date, '%Y-%m-%d')
     date = date.date() # Strip hours from date
-    print(date)
     date_plus_range = date + datetime.timedelta(days=range)
     date_minus_range = date - datetime.timedelta(days=range)
     slots = Slot.query.filter(and_(Slot.date <= date_plus_range, Slot.date >= date_minus_range)) #Show slots on current date +/- range days.
@@ -61,6 +59,7 @@ def show_date(date):
     slots_by_timedate = sorted(slots_by_time, key=lambda slot: slot.date)
     return render_template('index.html', all_slots=slots_by_timedate, today=date, next_date=date_plus_range, prev_date=date_minus_range)
 
+## Register new user
 @app.route('/register', methods=["GET", "POST"])
 def register():
     form = RegisterUserForm()
@@ -87,6 +86,7 @@ def register():
         
     return render_template('register.html', form=form)
 
+## Login user
 @app.route('/login', methods=["GET", "POST"])
 def login():
     form = LoginForm()
@@ -106,6 +106,7 @@ def login():
 
     return render_template("login.html", form=form)
 
+## Create slot
 @app.route("/create", methods=["Get","POST"])
 @admin_only
 def create_slot():
@@ -120,24 +121,33 @@ def create_slot():
         return redirect(url_for('index'))
     return render_template('slot.html', form=form)
 
+## Book slot
 @app.route("/book/<int:slot_id>", methods=["GET", "POST"])
 def book_slot(slot_id):
     form = BookingForm()
-    users = User.query.all()
-    names = [ user.name for user in users]
-    form.name.choices = names
     slot = Slot.query.get(slot_id)
     if form.validate_on_submit():
         slot.name = form.name.data
+        slot.comment = form.comment.data
+        slot.paid = form.paid.data
         db.session.commit()
         return redirect(url_for('index'))
+    # users = User.query.all()
+    # names = [ user.name for user in users]
+    # form.name.choices = names
+    form.name.data = slot.name # Pre-populate name
+    form.comment.data = slot.comment # Pre-populate comment
+    form.paid.data = slot.paid # Pre-populate paid
+    form.completed.data = slot.completed # Pre-populate completed
     return render_template('booking.html', form=form)
 
+## Logout user
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect (url_for('index'))
 
+## Delete slot
 @app.route('/delete_slot/<slot_id>')
 @admin_only
 def delete_slot(slot_id):
@@ -146,6 +156,7 @@ def delete_slot(slot_id):
     db.session.commit()
     return redirect(url_for('index'))
 
+## Create multiple slots
 @app.route('/create_slots', methods=["Get","POST"])
 @admin_only
 def create_slots():
@@ -164,3 +175,12 @@ def create_slots():
         db.session.commit()
         return redirect(url_for('index'))
     return render_template('slots.html', form=form)
+
+## Slot completed
+@app.route('/toggle_complete_slot/<slot_id>')
+@admin_only
+def toggle_complete_slot(slot_id):
+    slot = Slot.query.get(slot_id)
+    slot.completed = not slot.completed
+    db.session.commit()
+    return redirect(url_for('index'))
