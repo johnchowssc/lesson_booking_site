@@ -10,6 +10,8 @@ from functools import wraps
 from sqlalchemy import and_
 import os
 
+SCAN_RANGE = 7
+
 def admin_only(function):
     wraps(function)
     def decorated_function(*args, **kwargs):
@@ -30,15 +32,14 @@ def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
-# Index route: show current date slots +/- 14 days
+# Index route: show current date slots +/- 7 days
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
-    range = 14
     today_date = datetime.date.today()
-    today_plus_range = today_date + datetime.timedelta(days=range)
-    today_minus_range = today_date - datetime.timedelta(days=range)
-    slots = Slot.query.filter(and_(Slot.date <= today_plus_range, Slot.date >= today_minus_range)) #Show slots on current date +/- range days.
+    today_plus_range = today_date + datetime.timedelta(days=SCAN_RANGE)
+    today_minus_range = today_date - datetime.timedelta(days=SCAN_RANGE)
+    slots = Slot.query.filter(and_(Slot.date <= today_plus_range, Slot.date >= today_date)) #Show slots on current date + range days.
     slots_by_time = sorted(slots, key=lambda slot: slot.time)
     slots_by_timedate = sorted(slots_by_time, key=lambda slot: slot.date)
     print(slots_by_timedate)
@@ -49,12 +50,11 @@ def index():
 # Show dates outside of current date range
 @app.route('/date/<date>')
 def show_date(date):
-    range = 14
     date = datetime.datetime.strptime(date, '%Y-%m-%d')
     date = date.date() # Strip hours from date
-    date_plus_range = date + datetime.timedelta(days=range)
-    date_minus_range = date - datetime.timedelta(days=range)
-    slots = Slot.query.filter(and_(Slot.date <= date_plus_range, Slot.date >= date_minus_range)) #Show slots on current date +/- range days.
+    date_plus_range = date + datetime.timedelta(days=SCAN_RANGE)
+    date_minus_range = date - datetime.timedelta(days=SCAN_RANGE)
+    slots = Slot.query.filter(and_(Slot.date < date_plus_range, Slot.date > date_minus_range)) #Show slots on current date +/- range days.
     slots_by_time = sorted(slots, key=lambda slot: slot.time)
     slots_by_timedate = sorted(slots_by_time, key=lambda slot: slot.date)
     return render_template('index.html', all_slots=slots_by_timedate, today=date, next_date=date_plus_range, prev_date=date_minus_range)
