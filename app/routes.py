@@ -56,17 +56,6 @@ def show_date(date):
         slots_by_date.append(list(g))
     return render_template('index.html', all_slots=slots_by_date, today=date, next_date=date_plus_range, prev_date=date_minus_range)
 
-## Show all lessons dates route
-@app.route('/all_lessons', methods=['GET'])
-def show_all_lessons():
-    all_slots = Slot.query.all()
-    all_slots = sorted(all_slots, key=lambda slot: slot.time)
-    all_slots = sorted(all_slots, key=lambda slot: slot.date)
-    slots_by_date = []
-    for k, g in groupby(all_slots, key=lambda slot: slot.date):
-        slots_by_date.append(list(g))
-    return render_template('all_lessons.html', all_slots=slots_by_date)
-
 ## Register new user
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -193,13 +182,20 @@ def toggle_complete_slot(slot_id):
     db.session.commit()
     return redirect(url_for('show_date', date=slot.date))
 
+##############################
+#### Class Slot Booking Routes
+##############################
+
 ## Show All Classes
 @app.route('/classes')
 def show_classes():
     classes = ClassSlot.query.all()
     classes = sorted(classes, key=lambda slot: slot.time)
     classes = sorted(classes, key=lambda slot: slot.date)
-    return render_template('classes.html', classes=classes)
+    classes_by_date = []
+    for k, g in groupby(classes, key=lambda slot: slot.date):
+        classes_by_date.append(list(g))
+    return render_template('classes.html', classes=classes_by_date)
 
 ## Create Class
 @app.route('/create_class', methods=['GET','POST'])
