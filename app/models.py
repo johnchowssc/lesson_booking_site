@@ -42,6 +42,22 @@ class Slot(db.Model):
     def __repr__(self):
         return '<Slot {}>'.format(self.name)
 
+class ClassSlot(db.Model):
+    __tablename__ = "class_slots"
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False)
+    time = db.Column(db.Time, nullable=False)
+    class_name = db.Column(db.String(250), nullable=True)
+    completed = db.Column(db.Boolean, default=False, nullable=True)
+    students = db.relationship("Student")
+
+class Student(db.Model):
+    __tablename__ = "students"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=True)
+    paid = db.Column(db.Boolean, default=False, nullable=True)
+    parent_id = db.Column(db.Integer, db.ForeignKey('class_slots.id'))
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))

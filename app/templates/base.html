@@ -17,20 +17,30 @@
         <div class="w-full block flex-grow sm:flex sm:items-center sm:w-auto">
             <div class="text-sm sm:flex-grow">
                 <a  
-                    class="text-gray-400 hover:text-white block mt-4 sm:inline-block sm:mt-0" 
+                    class="text-gray-400 hover:text-white block mt-4 sm:inline-block sm:mt-0 px-1" 
                     href="{{url_for('index')}}">
-                    Home
+                    Lessons
+                </a>
+                <a  
+                    class="text-gray-400 hover:text-white block mt-4 sm:inline-block sm:mt-0 px-1" 
+                    href="{{url_for('show_classes')}}">
+                    Classes
                 </a>
             {% if current_user.is_admin: %}
                 <a  
-                    class="text-gray-400 hover:text-white block mt-4 sm:inline-block sm:mt-0" 
+                    class="text-gray-400 hover:text-white block mt-4 sm:inline-block sm:mt-0 px-1" 
                     href="{{url_for('create_slot')}}">
-                    Create Slot
+                    Create Lesson Slot
                 </a>
                 <a  
-                    class="text-gray-400 hover:text-white block mt-4 sm:inline-block sm:mt-0" 
+                    class="text-gray-400 hover:text-white block mt-4 sm:inline-block sm:mt-0 px-1" 
                     href="{{url_for('create_slots')}}">
-                    Create Slots
+                    Create Lesson Slots 
+                </a>
+                <a  
+                    class="text-gray-400 hover:text-white block mt-4 sm:inline-block sm:mt-0 px-1" 
+                    href="{{url_for('create_class')}}">
+                    Create Class
                 </a>
             {% endif %}
             </div>

@@ -2,8 +2,8 @@ import datetime
 from sqlite3 import Date
 from flask import render_template, request, flash, redirect, url_for, send_from_directory, abort
 from app import app, db
-from app.forms import LoginForm, SlotForm, BookingForm, RegisterUserForm, SlotsForm
-from app.models import User, Slot
+from app.forms import BookingClassForm, LoginForm, SlotForm, BookingForm, RegisterUserForm, SlotsForm, ClassForm
+from app.models import User, Slot, ClassSlot, Student
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user
 from functools import wraps
@@ -41,7 +41,7 @@ def index():
     slots = Slot.query.filter(and_(Slot.date <= today_plus_range, Slot.date >= today_minus_range)) #Show slots on current date +/- range days.
     slots_by_time = sorted(slots, key=lambda slot: slot.time)
     slots_by_timedate = sorted(slots_by_time, key=lambda slot: slot.date)
-    # print(slots)
+    print(slots_by_timedate)
     # print(datetime.date.today())
     # print(datetime.date.today() + datetime.timedelta(days=14))
     return render_template('index.html', all_slots=slots_by_timedate, today=today_date, next_date=today_plus_range, prev_date=today_minus_range)
@@ -184,3 +184,92 @@ def toggle_complete_slot(slot_id):
     slot.completed = not slot.completed
     db.session.commit()
     return redirect(url_for('index'))
+
+## Show All Classes
+@app.route('/classes')
+def show_classes():
+    classes = ClassSlot.query.all()
+    classes = sorted(classes, key=lambda slot: slot.time)
+    classes = sorted(classes, key=lambda slot: slot.date)
+    return render_template('classes.html', classes=classes)
+
+## Create Class
+@app.route('/create_class', methods=['GET','POST'])
+@admin_only
+def create_class():
+    form = ClassForm()
+    if form.validate_on_submit():
+        new_slot = ClassSlot(
+            date = form.date.data,
+            time = form.time.data,
+            class_name = form.class_name.data
+        )
+        db.session.add(new_slot)
+        db.session.commit()
+        return redirect(url_for('show_classes'))
+    return render_template('create_class.html', form=form)
+
+## Edit Class
+@app.route('/edit_class/<class_slot_id>', methods=['GET','POST'])
+@admin_only
+def edit_class(class_slot_id):
+    form = ClassForm()
+    class_slot = ClassSlot.query.get(class_slot_id)
+    if form.validate_on_submit():
+        new_slot = ClassSlot(
+            date = form.date.data,
+            time = form.time.data,
+            class_name = form.class_name.data
+        )
+        class_slot.date = new_slot.date
+        class_slot.time = new_slot.time
+        class_slot.class_name = new_slot.class_name
+        db.session.commit()
+        return redirect(url_for('show_classes'))
+    form.date.data = class_slot.date
+    form.time.data = class_slot.time
+    form.class_name.data = class_slot.class_name
+    return render_template('create_class.html', form=form)
+
+## Delete Class
+@app.route('/delete_class/<class_id>')
+@admin_only
+def delete_class(class_id):
+    class_slot = ClassSlot.query.get(class_id)
+    db.session.delete(class_slot)
+    db.session.commit()
+    return redirect(url_for('show_classes'))
+
+## Class Completed
+@app.route('/toggle_complete_class/<class_id>')
+@admin_only
+def toggle_complete_class(class_id):
+    class_slot = ClassSlot.query.get(class_id)
+    class_slot.completed = not class_slot.completed
+    db.session.commit()
+    return redirect(url_for('show_classes'))
+
+## Show and Book Students in Single Class
+@app.route('/classes/<class_slot_id>', methods=["GET", "POST"])
+def book_class(class_slot_id):
+    form = BookingClassForm()
+    class_slot = ClassSlot.query.get(class_slot_id)
+    if form.validate_on_submit():
+        new_student = Student(
+            name = form.name.data,
+            parent_id = class_slot_id
+        )
+        db.session.add(new_student)
+        db.session.commit()
+        return redirect(url_for('book_class', class_slot_id=class_slot_id))
+    return render_template('class_slot.html', current_class=class_slot, form=form)
+
+## Delete student in class
+@app.route('/delete_student/<student_id>')
+@admin_only
+def delete_student(student_id):
+    student = Student.query.get(student_id)
+    class_slot_id = student.parent_id
+    db.session.delete(student)
+    db.session.commit()
+    return redirect(url_for('book_class', class_slot_id=class_slot_id))

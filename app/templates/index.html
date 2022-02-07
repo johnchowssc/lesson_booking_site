@@ -12,7 +12,7 @@ Sydney Sabre Lessons
             {% if current_user.is_admin: %}
                 <div class="flex grow">
                     {% if slot.completed == True: %}
-                    <a class="grow bg-gray-400 line-through text-white font-bold py-2 px-4 rounded"
+                    <a class="grow bg-gray-700 line-through text-white font-bold py-2 px-4 rounded"
                     {% elif slot.name == None: %}
                     <a class="grow bg-gray-800 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded"
                     {% elif slot.paid == True: %}
@@ -21,7 +21,7 @@ Sydney Sabre Lessons
                     <a class="grow bg-red-800 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
                     {% endif %}
                         href="{{ url_for('book_slot', slot_id=slot.id) }}">
-                        {{ slot.date.strftime('%d-%m-%Y %a') }} at {{ slot.time.strftime('%H:%M') }} booked for {{ slot.name }}
+                        {{ slot.date.strftime('%d %b %Y %a') }} at {{ slot.time.strftime('%H:%M') }} booked for {{ slot.name }}
                     </a>
                 </div>
             <div class="flex">
@@ -39,27 +39,27 @@ Sydney Sabre Lessons
             {% else %}
                 {% if slot.completed == True: %}
                 <div class="flex grow">
-                    <p class="grow bg-gray-400 text-white line-through font-bold py-2 px-4 rounded">
-                        {{ slot.date.strftime('%d-%m-%Y %a') }} at {{ slot.time.strftime('%H:%M') }} is completed
+                    <p class="grow bg-gray-700 text-white line-through font-bold py-2 px-4 rounded">
+                        {{ slot.date.strftime('%d %b %Y %a') }} at {{ slot.time.strftime('%H:%M') }} is completed
                     </p>
                 </div>
                 {% elif slot.name == None: %}
                 <div class="flex grow">
                     <a class="grow bg-gray-800 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded"
                         href="{{ url_for('book_slot', slot_id=slot.id) }}">
-                        {{ slot.date.strftime('%d-%m-%Y %a') }} at {{ slot.time.strftime('%H:%M') }} is available.
+                        {{ slot.date.strftime('%d %b %Y %a') }} at {{ slot.time.strftime('%H:%M') }} is available.
                     </a>
                 </div>
                 {% elif slot.paid == True: %}
                 <div class="flex grow">
                     <p class="grow bg-green-600 text-white font-bold py-2 px-4 rounded">
-                        {{ slot.date.strftime('%d-%m-%Y %a') }} at {{ slot.time.strftime('%H:%M') }} is booked and paid.
+                        {{ slot.date.strftime('%d %b %Y %a') }} at {{ slot.time.strftime('%H:%M') }} is booked and paid.
                     </p>
                 </div>
                 {% else %}
                 <div class="flex grow">
                     <p class="grow bg-red-800 text-white font-bold py-2 px-4 rounded">
-                        {{ slot.date.strftime('%d-%m-%Y %a') }} at {{ slot.time.strftime('%H:%M') }} is already booked.
+                        {{ slot.date.strftime('%d %b %Y %a') }} at {{ slot.time.strftime('%H:%M') }} is already booked.
                     </p>
                 </div>
                 {% endif %}

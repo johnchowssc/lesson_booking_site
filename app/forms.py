@@ -35,3 +35,13 @@ class SlotsForm(FlaskForm):
     end_time = IntegerField("End Time", validators=[DataRequired()])
     interval = IntegerField("Interval", validators=[DataRequired()])
     submit = SubmitField("Create")
+
+class ClassForm(FlaskForm):
+    date = DateField("Slot Date", format='%Y-%m-%d', default=datetime.now(), validators=[DataRequired()])
+    time = TimeField("Slot Time", format='%H:%M', default=datetime.now(), validators=[DataRequired()])
+    class_name = StringField("Class Name", validators=[])
+    submit = SubmitField("Create")
+
+class BookingClassForm(FlaskForm):
+    name = StringField("Student Name", validators=[DataRequired()])
+    submit = SubmitField("Add Student")
