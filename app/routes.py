@@ -9,6 +9,7 @@ from flask_login import login_user, logout_user, current_user
 from functools import wraps
 from sqlalchemy import and_
 import os
+from itertools import groupby
 
 SCAN_RANGE = 7
 
@@ -32,22 +33,15 @@ def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
-# Index route: show current date slots +/- 7 days
+# Index route: show current date
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
-    today_date = datetime.date.today()
-    today_plus_range = today_date + datetime.timedelta(days=SCAN_RANGE)
-    today_minus_range = today_date - datetime.timedelta(days=SCAN_RANGE)
-    slots = Slot.query.filter(and_(Slot.date <= today_plus_range, Slot.date >= today_date)) #Show slots on current date + range days.
-    slots_by_time = sorted(slots, key=lambda slot: slot.time)
-    slots_by_timedate = sorted(slots_by_time, key=lambda slot: slot.date)
-    print(slots_by_timedate)
-    # print(datetime.date.today())
-    # print(datetime.date.today() + datetime.timedelta(days=14))
-    return render_template('index.html', all_slots=slots_by_timedate, today=today_date, next_date=today_plus_range, prev_date=today_minus_range)
+    date = datetime.date.today()
+    date = datetime.datetime.strftime(date, '%Y-%m-%d')
+    return redirect(url_for('show_date', date=date))
 
-# Show dates outside of current date range
+# Show dates outside of current date range +/- range
 @app.route('/date/<date>')
 def show_date(date):
     date = datetime.datetime.strptime(date, '%Y-%m-%d')
@@ -55,9 +49,23 @@ def show_date(date):
     date_plus_range = date + datetime.timedelta(days=SCAN_RANGE)
     date_minus_range = date - datetime.timedelta(days=SCAN_RANGE)
     slots = Slot.query.filter(and_(Slot.date < date_plus_range, Slot.date > date_minus_range)) #Show slots on current date +/- range days.
-    slots_by_time = sorted(slots, key=lambda slot: slot.time)
-    slots_by_timedate = sorted(slots_by_time, key=lambda slot: slot.date)
-    return render_template('index.html', all_slots=slots_by_timedate, today=date, next_date=date_plus_range, prev_date=date_minus_range)
+    slots = sorted(slots, key=lambda slot: slot.time) # Sort by time
+    slots = sorted(slots, key=lambda slot: slot.date) # Then sort by date
+    slots_by_date = []
+    for k, g in groupby(slots, key=lambda slot: slot.date):
+        slots_by_date.append(list(g))
+    return render_template('index.html', all_slots=slots_by_date, today=date, next_date=date_plus_range, prev_date=date_minus_range)
+
+## Show all lessons dates route
+@app.route('/all_lessons', methods=['GET'])
+def show_all_lessons():
+    all_slots = Slot.query.all()
+    all_slots = sorted(all_slots, key=lambda slot: slot.time)
+    all_slots = sorted(all_slots, key=lambda slot: slot.date)
+    slots_by_date = []
+    for k, g in groupby(all_slots, key=lambda slot: slot.date):
+        slots_by_date.append(list(g))
+    return render_template('all_lessons.html', all_slots=slots_by_date)
 
 ## Register new user
 @app.route('/register', methods=["GET", "POST"])
