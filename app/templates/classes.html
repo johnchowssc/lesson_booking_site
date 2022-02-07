@@ -9,6 +9,7 @@ Sydney Sabre Classes
         <h1 class="text-gray-200 my-2 text-3xl font-bold">{{ self.title() }}</h1>
         {% for class in classes %}
         <div class="flex mr-auto my-4 w-full md:w-3/4 lg:w-1/2">
+            {% if current_user.is_admin: %}
             <div class="flex grow">
                 {% if class.completed == True %}
                 <p class="grow bg-gray-700 line-through text-white font-bold py-2 px-4 rounded">
@@ -33,6 +34,17 @@ Sydney Sabre Classes
                     ✓
                 </a>
             </div>
+            {% else %}
+                {% if class.completed == True %}
+                    <p class="grow bg-gray-700 line-through text-white font-bold py-2 px-4 rounded">
+                        {{ class.date.strftime('%d %b %Y %a') }} at {{ class.time.strftime('%H:%M')}}: {{ class.class_name }}
+                    </p>    
+                {% else %}
+                    <p class="grow bg-blue-800 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded">
+                        {{ class.date.strftime('%d %b %Y %a') }} at {{ class.time.strftime('%H:%M')}}: {{ class.class_name }}
+                    </p>
+            {% endif %}
+            {% endif %}
         </div>
         {% endfor %}
 {% endblock %}

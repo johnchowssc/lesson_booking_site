@@ -11,6 +11,9 @@
             href="{{ url_for('edit_class', class_slot_id=current_class.id) }}">
             Edit Class
         </a>
+        <p class="text-gray-400">
+            {{ current_class.class_description }}
+        </p>
         {% for student in current_class.students %}
         <div class="flex mr-auto my-4 w-full md:w-3/4 lg:w-1/2">
             <div class="flex grow">

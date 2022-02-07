@@ -154,7 +154,7 @@ def delete_slot(slot_id):
     slot = Slot.query.get(slot_id)
     db.session.delete(slot)
     db.session.commit()
-    return redirect(url_for('index'))
+    return redirect(url_for('show_date', date=slot.date))
 
 ## Create multiple slots
 @app.route('/create_slots', methods=["Get","POST"])
@@ -162,9 +162,9 @@ def delete_slot(slot_id):
 def create_slots():
     form = SlotsForm()
     if form.validate_on_submit():
-        start = form.start_time.data
-        end = form.end_time.data
-        interval = form.interval.data
+        start = int(form.start_time.data)
+        end = int(form.end_time.data)
+        interval = int(form.interval.data)
         for hour in range(start,end,interval):
             time = datetime.time(hour,0)
             new_slot = Slot(
@@ -183,7 +183,7 @@ def toggle_complete_slot(slot_id):
     slot = Slot.query.get(slot_id)
     slot.completed = not slot.completed
     db.session.commit()
-    return redirect(url_for('index'))
+    return redirect(url_for('show_date', date=slot.date))
 
 ## Show All Classes
 @app.route('/classes')
@@ -202,7 +202,8 @@ def create_class():
         new_slot = ClassSlot(
             date = form.date.data,
             time = form.time.data,
-            class_name = form.class_name.data
+            class_name = form.class_name.data,
+            class_description = form.class_description.data
         )
         db.session.add(new_slot)
         db.session.commit()
@@ -219,16 +220,20 @@ def edit_class(class_slot_id):
         new_slot = ClassSlot(
             date = form.date.data,
             time = form.time.data,
-            class_name = form.class_name.data
+            class_name = form.class_name.data,
+            class_description = form.class_description.data
         )
         class_slot.date = new_slot.date
         class_slot.time = new_slot.time
         class_slot.class_name = new_slot.class_name
+        class_slot.class_description = new_slot.class_description
         db.session.commit()
         return redirect(url_for('show_classes'))
+    ## Prepopulate values in form
     form.date.data = class_slot.date
     form.time.data = class_slot.time
     form.class_name.data = class_slot.class_name
+    form.class_description.data = class_slot.class_description
     return render_template('create_class.html', form=form)
 
 ## Delete Class

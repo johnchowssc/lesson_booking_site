@@ -48,6 +48,7 @@ class ClassSlot(db.Model):
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
     class_name = db.Column(db.String(250), nullable=True)
+    class_description = db.Column(db.String(500), nullable=True)
     completed = db.Column(db.Boolean, default=False, nullable=True)
     students = db.relationship("Student")
 
