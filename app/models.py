@@ -10,6 +10,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     is_admin = db.Column(db.Boolean, default=False, nullable=True)
+    lesson_passes = db.Column(db.Integer, default=0)
+    class_passes = db.Column(db.Integer, default=0)
     slots = db.relationship('Slot', backref='student', lazy='dynamic')
 
     def set_password(self, password):
@@ -23,6 +25,24 @@ class User(UserMixin, db.Model):
     
     def remove_admin(self):
         self.is_admin = False
+
+    def check_lesson_passes(self):
+        return self.lesson_passes
+    
+    def check_class_passes(self):
+        return self.class_passes
+
+    def add_lesson_passes(self, lessons):
+        self.lesson_passes += lessons
+    
+    def remove_lesson_passes(self, lessons):
+        self.lesson_passes -= lessons
+    
+    def add_class_passes(self, classes):
+        self.class_passes += classes
+    
+    def remove_class_passes(self, classes):
+        self.class_passes -= classes
 
     # Tells Python how to print objects of this class.
     def __repr__(self):
