@@ -199,7 +199,10 @@ def show_classes():
     classes = ClassSlot.query.all()
     classes = sorted(classes, key=lambda slot: slot.time)
     classes = sorted(classes, key=lambda slot: slot.date)
-    return render_template('classes.html', classes=classes)
+    classes_by_date = []
+    for k, g in groupby(classes, key=lambda slot: slot.date):
+        classes_by_date.append(list(g))
+    return render_template('classes.html', classes=classes_by_date)
 
 ## Create Class
 @app.route('/create_class', methods=['GET','POST'])
