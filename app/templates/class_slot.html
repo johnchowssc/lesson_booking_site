@@ -13,6 +13,7 @@
             Edit Class
         </a>
         {% else %}
+        <!-- For Non-Admin -->
         {% endif %}
         <p class="text-gray-400">
             {{ current_class.class_description }}
@@ -34,6 +35,16 @@
         </div>
         {% endfor %}
         {% else %}
+        <!-- For Non-Admin -->
+            {% for student in current_class.students %}
+            <div class="flex mr-auto my-4 w-full md:w-3/4 lg:w-1/2">
+                <div class="flex grow">
+                    <p class="text-white">
+                        Student
+                    </p>
+                </div>
+            </div>   
+            {% endfor %}
         {% endif %}
         <form action="" method="post" novalidate>
             {{ form.hidden_tag() }}
