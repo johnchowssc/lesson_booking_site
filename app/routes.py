@@ -11,7 +11,7 @@ from sqlalchemy import and_
 import os
 from itertools import groupby
 
-SCAN_RANGE = 7
+SCAN_RANGE = 8
 
 def admin_only(function):
     wraps(function)
