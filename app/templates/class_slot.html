@@ -17,6 +17,7 @@
         <p class="text-gray-400">
             {{ current_class.class_description }}
         </p>
+        {% if current_user.is_admin: %}
         {% for student in current_class.students %}
         <div class="flex mr-auto my-4 w-full md:w-3/4 lg:w-1/2">
             <div class="flex grow">
@@ -24,15 +25,14 @@
                     {{ student.name }}
                 </p>
             </div>
-            {% if current_user.is_admin: %}
             <div class="flex">
                 <a class="bg-red-400 hover:bg-red-200 text-white font-bold mx-2 px-3 py-2 rounded"   
                 href="{{url_for('delete_student', student_id=student.id)}}">
                 ✘
                 </a>
             </div>
-            {% else %}
-            {% endif %}
+        {% else %}
+        {% endif %}
         </div>
         {% endfor %}
         <form action="" method="post" novalidate>
