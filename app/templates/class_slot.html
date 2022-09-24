@@ -24,12 +24,15 @@
                     {{ student.name }}
                 </p>
             </div>
+            {% if current_user.is_admin: %}
             <div class="flex">
                 <a class="bg-red-400 hover:bg-red-200 text-white font-bold mx-2 px-3 py-2 rounded"   
                 href="{{url_for('delete_student', student_id=student.id)}}">
                 ✘
                 </a>
             </div>
+            {% else %}
+            {% endif %}
         </div>
         {% endfor %}
         <form action="" method="post" novalidate>
