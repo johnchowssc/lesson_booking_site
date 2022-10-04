@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+  {% if current_user.is_authenticated: %}
     <div class="container">
         <h1 class="text-gray-400 my-2 text-3xl font-bold">{{ self.title() }}</h1>
         {% if current_user.is_admin: %}
@@ -40,26 +41,40 @@
             <div class="flex mr-auto my-4 w-full md:w-3/4 lg:w-1/2">
                 <div class="flex grow">
                     <p class="text-white">
+                    {% if current_user.id == student.user_id %}
+                        Your booking: {{ student.name }}
+                    {% else %}
                         Student
+                    {% endif %}
                     </p>
                 </div>
             </div>   
             {% endfor %}
         {% endif %}
-        <form action="" method="post" novalidate>
-            {{ form.hidden_tag() }}
-            <div class="my-2">
-                <p class="text-white">
-                    {{ form.name.label }}
-                </p>
-                <p>
-                    {{ form.name }}
-                </p>
-                {% for error in form.name.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </div>
-            <button class="bg-blue-400 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded">{{ form.submit() }}</button>
-        </form>
+        {% if current_class.students|length < current_class.capacity %}
+            <p class="text-white">Places still available to book in this class: {{ current_class.capacity - current_class.students|length }}</p>
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <div class="my-2">
+                    <p class="text-white">
+                        {{ form.name.label }}
+                    </p>
+                    <p>
+                        {{ form.name }}
+                    </p>
+                    {% for error in form.name.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                    <button class="bg-blue-400 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded">{{ form.submit() }}</button>
+            </form>
+        {% else %}
+            <p class="text-white">This class has reached its capacity.</p>
+        {% endif %}
     </div>
+  {% else %}
+    <div class="container">
+        <h1 class="text-gray-400 my-2 text-3xl font-bold">Please log in or register to book a class</h1>
+    </div>
+  {% endif %}
 {% endblock %}

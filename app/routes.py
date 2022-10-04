@@ -271,13 +271,18 @@ def book_class(class_slot_id):
     form = BookingClassForm()
     class_slot = ClassSlot.query.get(class_slot_id)
     if form.validate_on_submit():
-        new_student = Student(
-            name = form.name.data,
-            parent_id = class_slot_id
-        )
-        db.session.add(new_student)
-        db.session.commit()
-        return redirect(url_for('book_class', class_slot_id=class_slot_id))
+        if class_slot.capacity - len(class_slot.students) > 0:
+            new_student = Student(
+                name = form.name.data,
+                parent_id = class_slot_id,
+                user_id = current_user.id
+            )
+            db.session.add(new_student)
+            db.session.commit()
+            return redirect(url_for('book_class', class_slot_id=class_slot_id))
+        else:
+            # Ideally this would be another page
+            return redirect(url_for('book_class', class_slot_id=class_slot_id))
     return render_template('class_slot.html', current_class=class_slot, form=form)
 
 ## Delete student in class

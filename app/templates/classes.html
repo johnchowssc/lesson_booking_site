@@ -17,12 +17,12 @@ Sydney Sabre Classes
                 <div class="flex grow">
                     {% if time.completed == True %}
                     <p class="grow bg-gray-700 line-through text-white font-bold py-2 px-4 rounded">
-                        {{ time.time.strftime('%H:%M')}}: {{ time.class_name }}
+                        {{ time.time.strftime('%H:%M')}}: {{ time.class_name }}, Slots available = {{ time.capacity - time.students|length }}
                     </p>    
                     {% else %}
                     <a class="grow bg-blue-800 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                         href="{{ url_for('book_class', class_slot_id=time.id) }}">
-                        {{ time.time.strftime('%H:%M')}}: {{ time.class_name }}
+                        {{ time.time.strftime('%H:%M')}}: {{ time.class_name }}, Slots available = {{ time.capacity - time.students|length }}
                     </a>
                     {% endif %}
                 </div>
@@ -41,12 +41,12 @@ Sydney Sabre Classes
                 {% else %}
                     {% if time.completed == True %}
                         <p class="grow bg-gray-700 line-through text-white font-bold py-2 px-4 rounded">
-                            {{ time.time.strftime('%H:%M')}}: {{ time.class_name }}
+                            {{ time.time.strftime('%H:%M')}}: {{ time.class_name }}, Slots available = {{ time.capacity - time.students|length }}
                         </p>    
                     {% else %}
                     <a class="grow bg-blue-800 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                         href="{{ url_for('book_class', class_slot_id=time.id) }}">
-                        {{ time.time.strftime('%H:%M')}}: {{ time.class_name }}
+                        {{ time.time.strftime('%H:%M')}}: {{ time.class_name }}, Slots available = {{ time.capacity - time.students|length }}
                     </a>
                 {% endif %}
                 {% endif %}
