@@ -273,7 +273,8 @@ def book_class(class_slot_id):
     if form.validate_on_submit():
         new_student = Student(
             name = form.name.data,
-            parent_id = class_slot_id
+            parent_id = class_slot_id,
+            user_id = current_user.id
         )
         db.session.add(new_student)
         db.session.commit()
