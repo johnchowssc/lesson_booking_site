@@ -5,3 +5,4 @@ __pycache__
 node_modules/
 source
 .*
+app.db

@@ -10,6 +10,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     is_admin = db.Column(db.Boolean, default=False, nullable=True)
+    waiver_returned = db.Column(db.Boolean, default=False, nullable=True)
     slots = db.relationship('Slot', backref='student', lazy='dynamic')
 
     def set_password(self, password):
@@ -50,6 +51,7 @@ class ClassSlot(db.Model):
     class_name = db.Column(db.String(250), nullable=True)
     class_description = db.Column(db.String(500), nullable=True)
     completed = db.Column(db.Boolean, default=False, nullable=True)
+    capacity = db.Column(db.Integer, default=6, nullable=True)
     students = db.relationship("Student")
 
 class Student(db.Model):
