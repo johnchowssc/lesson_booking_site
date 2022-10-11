@@ -216,7 +216,8 @@ def create_class():
             date = form.date.data,
             time = form.time.data,
             class_name = form.class_name.data,
-            class_description = form.class_description.data
+            class_description = form.class_description.data,
+            capacity = form.capacity.data
         )
         db.session.add(new_slot)
         db.session.commit()
@@ -234,12 +235,14 @@ def edit_class(class_slot_id):
             date = form.date.data,
             time = form.time.data,
             class_name = form.class_name.data,
-            class_description = form.class_description.data
+            class_description = form.class_description.data,
+            capacity = form.capacity.data
         )
         class_slot.date = new_slot.date
         class_slot.time = new_slot.time
         class_slot.class_name = new_slot.class_name
         class_slot.class_description = new_slot.class_description
+        class_slot.capacity = new_slot.capacity
         db.session.commit()
         return redirect(url_for('show_classes'))
     ## Prepopulate values in form
@@ -247,6 +250,7 @@ def edit_class(class_slot_id):
     form.time.data = class_slot.time
     form.class_name.data = class_slot.class_name
     form.class_description.data = class_slot.class_description
+    form.capacity.data = class_slot.capacity
     return render_template('create_class.html', form=form)
 
 ## Delete Class

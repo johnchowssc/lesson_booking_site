@@ -41,6 +41,7 @@ class ClassForm(FlaskForm):
     time = TimeField("Slot Time", format='%H:%M', default=datetime.now(), validators=[DataRequired()])
     class_name = StringField("Class Name", validators=[])
     class_description = TextAreaField("Description", validators=[])
+    capacity = IntegerField("Class Capacity", default=6, validators=[DataRequired()])
     submit = SubmitField("Create")
 
 class BookingClassForm(FlaskForm):
