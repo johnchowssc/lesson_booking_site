@@ -51,6 +51,7 @@
             </div>   
             {% endfor %}
         {% endif %}
+        {% if current_class.capacity != None  %}
         {% if current_class.students|length < current_class.capacity %}
             <p class="text-white">Places still available to book in this class: {{ current_class.capacity - current_class.students|length }}</p>
             <form action="" method="post" novalidate>
@@ -92,6 +93,7 @@
             </form>
         {% else %}
             <p class="text-white">This class has reached its capacity.</p>
+        {% endif %}
         {% endif %}
     </div>
   {% else %}
