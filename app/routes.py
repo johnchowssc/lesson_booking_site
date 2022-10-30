@@ -197,6 +197,19 @@ def toggle_complete_slot(slot_id):
     db.session.commit()
     return redirect(url_for('show_date', date=slot.date))
 
+## Slot clear
+@app.route('/toggle_clear_slot/<slot_id>')
+@admin_only
+def toggle_clear_slot(slot_id):
+    slot = Slot.query.get(slot_id)
+    slot.name = None
+    slot.comment = None
+    slot.paid = None
+    slot.complete = None
+    # slot.user.id = None
+    db.session.commit()
+    return redirect(url_for('show_date', date=slot.date))
+
 ## Show All Classes
 @app.route('/classes')
 def show_classes():
