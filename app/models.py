@@ -52,7 +52,7 @@ class ClassSlot(db.Model):
     class_name = db.Column(db.String(250), nullable=True)
     class_description = db.Column(db.String(500), nullable=True)
     completed = db.Column(db.Boolean, default=False, nullable=True)
-    capacity = db.Column(db.Integer, default=6, nullable=False)
+    capacity = db.Column(db.Integer, default=6, nullable=True)
     students = db.relationship("Student")
 
 class Student(db.Model):
