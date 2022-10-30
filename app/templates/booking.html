@@ -9,6 +9,30 @@ Book Slot
         <h1 class="text-gray-400 my-2 text-3xl font-bold">{{ self.title() }}</h1>
         <p class="text-gray-400">Enter student details</p>
         <form action="" method="post" novalidate>
+            {% if current_user.is_admin: %}
+            <div class="my-2">
+                <p class="text-white">
+                    {{ form.date.label }}
+                </p>
+                <p>
+                    {{ form.date }}
+                </p>
+                {% for error in form.date.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="my-2">
+              <p class="text-white">
+                  {{ form.time.label }}
+              </p>
+              <p>
+                  {{ form.time }}
+              </p>
+              {% for error in form.time.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </div>
+            {% endif %}
             {{ form.hidden_tag() }}
             <div class="my-2">
                 <p class="text-white">
@@ -38,11 +62,11 @@ Book Slot
                     {{ form.paid.label }} {{ form.paid }}
                 </p>
             </div>
-            <div class="my-2">
+            <!-- <div class="my-2">
                 <p class="text-white">
                     {{ form.completed.label }} {{ form.completed }}
                 </p>
-            </div>
+            </div> -->
             {% endif %}
             <button class="bg-blue-400 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded">{{ form.submit() }}</button>
         </form>

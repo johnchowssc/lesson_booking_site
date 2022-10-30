@@ -139,6 +139,8 @@ def book_slot(slot_id):
     form = BookingForm()
     slot = Slot.query.get(slot_id)
     if form.validate_on_submit():
+        slot.date = form.date.data
+        slot.time = form.time.data
         slot.name = form.name.data
         slot.comment = form.comment.data
         slot.paid = form.paid.data
@@ -147,10 +149,11 @@ def book_slot(slot_id):
     # users = User.query.all()
     # names = [ user.name for user in users]
     # form.name.choices = names
+    form.date.data = slot.date # Pre-populate date
+    form.time.data = slot.time # Pre-populate time
     form.name.data = slot.name # Pre-populate name
     form.comment.data = slot.comment # Pre-populate comment
     form.paid.data = slot.paid # Pre-populate paid
-    form.completed.data = slot.completed # Pre-populate completed
     return render_template('booking.html', form=form)
 
 ## Logout user

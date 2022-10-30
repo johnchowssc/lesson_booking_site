@@ -17,6 +17,8 @@ class SlotForm(FlaskForm):
     submit = SubmitField("Create")
 
 class BookingForm(FlaskForm):
+    date = DateField("Slot Date", format='%Y-%m-%d', default=datetime.now(), validators=[DataRequired()])
+    time = TimeField("Slot Time", format='%H:%M', default=datetime.now(), validators=[DataRequired()])
     name = StringField("Name", validators=[DataRequired()])
     comment = TextAreaField("Comment", validators=[])
     paid = BooleanField("Paid", default=False, validators=[])
