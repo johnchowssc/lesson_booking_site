@@ -58,7 +58,7 @@ def show_date(date):
     slots_by_date = []
     for k, g in groupby(slots, key=lambda slot: slot.date):
         slots_by_date.append(list(g))
-    return render_template('index.html', all_slots=slots_by_date, today=date, next_date=date_plus_range, prev_date=date_minus_range)
+    return render_template('index.html', all_slots=slots_by_date, today=date, next_date=date_plus_range, prev_date=date_minus_range, prior_date=date_prev_range)
 
 ## Show all lessons dates route
 @app.route('/all_lessons', methods=['GET'])
