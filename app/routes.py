@@ -13,6 +13,7 @@ from itertools import groupby
 
 SCAN_RANGE = 14
 PAST_RANGE = 1
+PREV_RANGE = 7
 
 def admin_only(function):
     wraps(function)
@@ -49,6 +50,7 @@ def show_date(date):
     date = date.date() # Strip hours from date
     date_plus_range = date + datetime.timedelta(days=SCAN_RANGE)
     date_minus_range = date - datetime.timedelta(days=PAST_RANGE)
+    date_prev_range = date - datetime.timedelta(days=PREV_RANGE)
     # date_minus_range = date - datetime.timedelta(days=SCAN_RANGE)
     slots = Slot.query.filter(and_(Slot.date < date_plus_range, Slot.date > date_minus_range)) #Show slots on current date +/- range days.
     slots = sorted(slots, key=lambda slot: slot.time) # Sort by time
