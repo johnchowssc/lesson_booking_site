@@ -59,6 +59,8 @@ class Student(db.Model):
     __tablename__ = "students"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=True)
+    email = db.Column(db.String(250), nullable=True)
+    mobile = db.Column(db.String(250), nullable=True)
     paid = db.Column(db.Boolean, default=False, nullable=True)
     parent_id = db.Column(db.Integer, db.ForeignKey('class_slots.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)

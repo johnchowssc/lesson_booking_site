@@ -47,5 +47,7 @@ class ClassForm(FlaskForm):
     submit = SubmitField("Create")
 
 class BookingClassForm(FlaskForm):
-    name = StringField("Student Name and Email / Mobile", validators=[DataRequired()])
+    name = StringField("Student Name", validators=[DataRequired()])
+    email = StringField("Student Email", validators=[DataRequired()])
+    mobile = StringField("Student Mobile", validators=[DataRequired()])
     submit = SubmitField("Add Student")

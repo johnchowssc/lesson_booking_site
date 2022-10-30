@@ -298,6 +298,8 @@ def book_class(class_slot_id):
         if class_slot.capacity - len(class_slot.students) > 0:
             new_student = Student(
                 name = form.name.data,
+                email = form.email.data,
+                mobile = form.mobile.data,
                 parent_id = class_slot_id,
                 user_id = current_user.id
             )
