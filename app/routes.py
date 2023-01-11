@@ -191,6 +191,15 @@ def create_slots():
         return redirect(url_for('index'))
     return render_template('slots.html', form=form)
 
+## Slot Paid
+@app.route('/toggle_paid_slot/<slot_id>')
+@admin_only
+def toggle_paid_slot(slot_id):
+    slot = Slot.query.get(slot_id)
+    slot.paid = not slot.paid
+    db.session.commit()
+    return redirect(url_for('show_date', date=slot.date))
+
 ## Slot completed
 @app.route('/toggle_complete_slot/<slot_id>')
 @admin_only

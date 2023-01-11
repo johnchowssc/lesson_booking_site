@@ -14,14 +14,20 @@ Sydney Sabre Lessons Week of {{ today.strftime('%d %b %Y') }}
             {% for time in date %}
                 {% if current_user.is_admin: %}
                     <div class="flex ml-12 mr-auto my-4 w-3/4 md:w-1/2 lg:w-1/2">
-                        {% if time.completed == True: %}
-                        <a class="grow bg-gray-700 line-through text-white font-bold py-2 px-4 rounded"
-                        {% elif time.name == None: %}
+                        {% if time.name == None: %}
                         <a class="grow bg-gray-800 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded"
                         {% elif time.paid == True: %}
-                        <a class="grow bg-green-800 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                            {% if time.completed == True: %}
+                            <a class="grow line-through bg-green-800 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                            {% else %}
+                            <a class="grow bg-green-800 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                            {% endif %}
                         {% else %}
-                        <a class="grow bg-red-800 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                            {% if time.completed == True: %}
+                            <a class="grow line-through bg-red-800 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                            {% else %}
+                            <a class="grow bg-red-800 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                            {% endif %}
                         {% endif %}
                             href="{{ url_for('book_slot', slot_id=time.id) }}">
                             {{ time.time.strftime('%H:%M') }} booked for {{ time.name }}
@@ -35,11 +41,17 @@ Sydney Sabre Lessons Week of {{ today.strftime('%d %b %Y') }}
                         <div class="flex">
                             <a class="bg-blue-400 hover:bg-blue-200 text-white font-bold mx-2 px-3 py-2 rounded"   
                                 href="{{url_for('toggle_clear_slot', slot_id=time.id) }}">
-                                ✘
+                                -
                             </a>
                         </div>
                         <div class="flex">
                             <a class="bg-green-400 hover:bg-green-200 text-white font-bold mx-2 px-3 py-2 rounded"   
+                                href="{{url_for('toggle_paid_slot', slot_id=time.id) }}">
+                                $
+                            </a>
+                        </div>
+                        <div class="flex">
+                            <a class="bg-gray-800 hover:bg-gray-200 text-white font-bold mx-2 px-3 py-2 rounded"   
                                 href="{{url_for('toggle_complete_slot', slot_id=time.id) }}">
                                 ✓
                             </a>
