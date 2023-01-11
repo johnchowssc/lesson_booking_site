@@ -42,6 +42,11 @@
                     href="{{url_for('create_class')}}">
                     Create Class
                 </a>
+                <a  
+                    class="text-gray-400 hover:text-white block mt-4 sm:inline-block sm:mt-0 px-1" 
+                    href="{{url_for('show_all_classes')}}">
+                    Show All Classes
+                </a>
             {% endif %}
             </div>
             {% if current_user.is_authenticated: %}

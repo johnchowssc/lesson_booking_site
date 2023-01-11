@@ -214,15 +214,30 @@ def toggle_clear_slot(slot_id):
     return redirect(url_for('show_date', date=slot.date))
 
 ## Show All Classes
-@app.route('/classes')
-def show_classes():
+@app.route('/all_classes')
+def show_all_classes():
+    date = datetime.date.today()
+    date = datetime.datetime.strftime(date, '%Y-%m-%d')
     classes = ClassSlot.query.all()
-    classes = sorted(classes, key=lambda slot: slot.time)
-    classes = sorted(classes, key=lambda slot: slot.date)
+    classes = sorted(classes, key=lambda slot: slot.time) # Sort by time
+    classes = sorted(classes, key=lambda slot: slot.date) # Then sort by date
     classes_by_date = []
     for k, g in groupby(classes, key=lambda slot: slot.date):
         classes_by_date.append(list(g))
     return render_template('classes.html', classes=classes_by_date)
+
+## Show Classes
+@app.route('/classes')
+def show_classes():
+    date = datetime.date.today()
+    date_prev_range = date - datetime.timedelta(days=PREV_RANGE)
+    classes = ClassSlot.query.filter(ClassSlot.date > date_prev_range) #Show slots after previous range date.
+    classes = sorted(classes, key=lambda slot: slot.time) # Sort by time
+    classes = sorted(classes, key=lambda slot: slot.date) # Then sort by date
+    classes_by_date = []
+    for k, g in groupby(classes, key=lambda slot: slot.date):
+        classes_by_date.append(list(g))
+    return render_template('classes.html', classes=classes_by_date, today=date)
 
 ## Create Class
 @app.route('/create_class', methods=['GET','POST'])
