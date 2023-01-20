@@ -24,8 +24,13 @@
         <div class="flex mr-auto my-4 w-full md:w-3/4 lg:w-1/2">
             <div class="flex grow">
                 <p class="text-white">
-                    <b>Name: </b> {{ student.name }} <b>Email: </b> {{ student.email }} <b>Mobile: </b> {{ student.mobile }} <b>Paid: </b>
-
+                    <b>Name: </b> {{ student.name }}
+                <br>
+                    <b>Email: </b> {{ student.email }}
+                <br>
+                    <b>Mobile: </b> {{ student.mobile }}
+                <br>
+                    <b>Paid: </b>
                     {% if student.paid == True: %}
                         <span style="color: green"> ✓</span>
                     {% else %}
