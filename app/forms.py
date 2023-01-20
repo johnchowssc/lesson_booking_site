@@ -50,4 +50,5 @@ class BookingClassForm(FlaskForm):
     name = StringField("Student Name", validators=[DataRequired()])
     email = StringField("Student Email", validators=[DataRequired()])
     mobile = StringField("Student Mobile", validators=[DataRequired()])
+    paid = BooleanField("Paid", default=False, validators=[])
     submit = SubmitField("Add Student")
