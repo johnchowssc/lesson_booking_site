@@ -16,9 +16,10 @@ Sydney Sabre Classes Active
                 {% if current_user.is_admin: %}
                 <div class="flex grow">
                     {% if time.completed == True %}
-                    <p class="grow bg-gray-700 line-through text-white font-bold py-2 px-4 rounded">
+                    <a class="grow bg-gray-700 hover:bg-gray-400 line-through text-white font-bold py-2 px-4 rounded"
+                        href="{{ url_for('book_class', class_slot_id=time.id) }}">
                         {{ time.time.strftime('%H:%M')}}: {{ time.class_name }}, Slots booked = {{time.students|length }}/{{ time.capacity }}
-                    </p>    
+                    </a>    
                     {% else %}
                     <a class="grow bg-blue-800 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                         href="{{ url_for('book_class', class_slot_id=time.id) }}">
