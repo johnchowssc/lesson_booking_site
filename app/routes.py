@@ -143,6 +143,7 @@ def book_slot(slot_id):
         slot.time = form.time.data
         slot.name = form.name.data
         slot.comment = form.comment.data
+        slot.instructor = form.instructor.data
         slot.paid = form.paid.data
         db.session.commit()
         return redirect(url_for('index'))
@@ -153,6 +154,7 @@ def book_slot(slot_id):
     form.time.data = slot.time # Pre-populate time
     form.name.data = slot.name # Pre-populate name
     form.comment.data = slot.comment # Pre-populate comment
+    form.instructor.data = slot.instructor # Pre-populate comment
     form.paid.data = slot.paid # Pre-populate paid
     return render_template('booking.html', form=form)
 
