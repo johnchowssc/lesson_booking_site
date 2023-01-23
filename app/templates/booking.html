@@ -32,10 +32,11 @@ Book Slot
               <span style="color: red;">[{{ error }}]</span>
               {% endfor %}
             </div>
-            {% endif %}
+            {% else %}
             <p hidden>
                 {{ form.date }} {{ form.time }}
             </p>
+            {% endif %}
             {{ form.hidden_tag() }}
             <div class="my-2">
                 <p class="text-white">
