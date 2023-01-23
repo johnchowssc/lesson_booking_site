@@ -49,7 +49,7 @@ Sydney Sabre Classes Active
                         href="{{ url_for('book_class', class_slot_id=time.id) }}">
                         {{ time.time.strftime('%H:%M')}}: {{ time.class_name }}, Slots booked = {{time.students|length }}/{{ time.capacity }}
                     </a>
-                {% endif %}
+                    {% endif %}
                 {% endif %}
             </div>
             {% endfor %}

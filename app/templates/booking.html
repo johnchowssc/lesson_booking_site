@@ -33,6 +33,9 @@ Book Slot
               {% endfor %}
             </div>
             {% endif %}
+            <p hidden>
+                {{ form.date }} {{ form.time }}
+            </p>
             {{ form.hidden_tag() }}
             <div class="my-2">
                 <p class="text-white">
