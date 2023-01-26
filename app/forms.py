@@ -14,6 +14,7 @@ class LoginForm(FlaskForm):
 class SlotForm(FlaskForm):
     date = DateField("Slot Date", format='%Y-%m-%d', default=datetime.now(), validators=[DataRequired()])
     time = TimeField("Slot Time", format='%H:%M', default=datetime.now(), validators=[DataRequired()])
+    instructor = StringField("Instructor", validators=[DataRequired()])
     submit = SubmitField("Create")
 
 class BookingForm(FlaskForm):
@@ -21,7 +22,7 @@ class BookingForm(FlaskForm):
     time = TimeField("Slot Time", format='%H:%M', default=datetime.now(), validators=[DataRequired()])
     name = StringField("Name", validators=[DataRequired()])
     comment = TextAreaField("Comment", validators=[])
-    instructor = StringField("Instructor", validators=[])
+    instructor = StringField("Instructor", validators=[DataRequired()])
     paid = BooleanField("Paid", default=False, validators=[])
     completed = BooleanField("Completed", default=False, validators=[])
     submit = SubmitField("Book")
@@ -37,6 +38,7 @@ class SlotsForm(FlaskForm):
     start_time = SelectField("Start Time (24H)", choices=range(24), validators=[DataRequired()])
     end_time = SelectField("End Time (24H)", choices=range(24), validators=[DataRequired()])
     interval = SelectField("Interval (Hours)", choices=range(1,5), validators=[DataRequired()])
+    instructor = StringField("Instructor", validators=[DataRequired()])
     submit = SubmitField("Create")
 
 class ClassForm(FlaskForm):

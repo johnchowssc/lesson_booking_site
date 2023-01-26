@@ -44,6 +44,23 @@ def index():
     return redirect(url_for('show_date', date=date))
 
 # Show dates outside of current date range +/- range
+# @app.route('/date/<date>')
+# def show_date(date):
+#     date = datetime.datetime.strptime(date, '%Y-%m-%d')
+#     date = date.date() # Strip hours from date
+#     date_plus_range = date + datetime.timedelta(days=SCAN_RANGE)
+#     date_minus_range = date - datetime.timedelta(days=PAST_RANGE)
+#     date_prev_range = date - datetime.timedelta(days=PREV_RANGE)
+#     # date_minus_range = date - datetime.timedelta(days=SCAN_RANGE)
+#     slots = Slot.query.filter(and_(Slot.date < date_plus_range, Slot.date > date_minus_range)) #Show slots on current date +/- range days.
+#     slots = sorted(slots, key=lambda slot: slot.time) # Sort by time
+#     slots = sorted(slots, key=lambda slot: slot.date) # Then sort by date
+#     slots_by_date = []
+#     for k, g in groupby(slots, key=lambda slot: slot.date):
+#         slots_by_date.append(list(g))
+#     return render_template('index.html', all_slots=slots_by_date, today=date, next_date=date_plus_range, prev_date=date_minus_range, prior_date=date_prev_range)
+
+# Show dates outside of current date range +/- range sorted by Instructor
 @app.route('/date/<date>')
 def show_date(date):
     date = datetime.datetime.strptime(date, '%Y-%m-%d')
@@ -54,11 +71,18 @@ def show_date(date):
     # date_minus_range = date - datetime.timedelta(days=SCAN_RANGE)
     slots = Slot.query.filter(and_(Slot.date < date_plus_range, Slot.date > date_minus_range)) #Show slots on current date +/- range days.
     slots = sorted(slots, key=lambda slot: slot.time) # Sort by time
+    slots = sorted(slots, key=lambda slot: slot.instructor) #Sort by instructor 
     slots = sorted(slots, key=lambda slot: slot.date) # Then sort by date
     slots_by_date = []
     for k, g in groupby(slots, key=lambda slot: slot.date):
         slots_by_date.append(list(g))
-    return render_template('index.html', all_slots=slots_by_date, today=date, next_date=date_plus_range, prev_date=date_minus_range, prior_date=date_prev_range)
+    slots_by_date_instructor = []
+    for slots_in_date in slots_by_date:
+        slots_by_instructor = []
+        for k, g in groupby(slots_in_date, key= lambda slot_in_day: slot_in_day.instructor):
+            slots_by_instructor.append(list(g))
+        slots_by_date_instructor.append(slots_by_instructor)
+    return render_template('index.html', all_slots=slots_by_date_instructor, today=date, next_date=date_plus_range, prev_date=date_minus_range, prior_date=date_prev_range)
 
 ## Show all lessons dates route
 @app.route('/all_lessons', methods=['GET'])
@@ -126,7 +150,8 @@ def create_slot():
     if form.validate_on_submit():
         new_slot = Slot(
             date = form.date.data,
-            time = form.time.data
+            time = form.time.data,
+            instructor = form.instructor.data
         )
         db.session.add(new_slot)
         db.session.commit()
@@ -186,7 +211,8 @@ def create_slots():
             time = datetime.time(hour,0)
             new_slot = Slot(
                 date = form.date.data,
-                time = time
+                time = time,
+                instructor = form.instructor.data
             )
             db.session.add(new_slot)
         db.session.commit()
