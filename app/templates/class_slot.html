@@ -61,7 +61,7 @@
                     {% if current_user.id == student.user_id %}
                         Your booking: {{ student.name }}
                     {% else %}
-                        Student
+                        Student Details Hidden
                     {% endif %}
                     </p>
                 </div>
@@ -106,11 +106,13 @@
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </div>
+                {% if current_user.is_admin: %}
                 <div class="my-2">
                     <p class="text-white">
                         {{ form.paid.label }} {{ form.paid }}
                     </p>
                 </div>
+                {% endif %}
                     <button class="bg-blue-400 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded">{{ form.submit() }}</button>
             </form>
         {% else %}
