@@ -6,10 +6,12 @@ from flask_migrate import Migrate
 from flask_login import LoginManager, current_user
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_mail import Mail
 
 app = Flask(__name__)
 app.config.from_object(Config) # Used to import 'SECRET_KEY' from config file for CSRF.
 login = LoginManager(app)
+mail = Mail(app)
 
 convention = {
     "ix": 'ix_%(column_0_label)s',

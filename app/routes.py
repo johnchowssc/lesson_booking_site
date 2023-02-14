@@ -2,7 +2,7 @@ import datetime
 from sqlite3 import Date
 from flask import render_template, request, flash, redirect, url_for, send_from_directory, abort
 from app import app, db
-from app.forms import BookingClassForm, LoginForm, SlotForm, BookingForm, RegisterUserForm, SlotsForm, ClassForm
+from app.forms import BookingClassForm, LoginForm, SlotForm, BookingForm, RegisterUserForm, SlotsForm, ClassForm, ResetPasswordRequestForm, ResetPasswordForm
 from app.models import User, Slot, ClassSlot, Student
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user
@@ -10,6 +10,9 @@ from functools import wraps
 from sqlalchemy import and_
 import os
 from itertools import groupby
+from flask_mail import Mail, Message
+from smtplib import SMTP
+from app.email import send_class_booking_email, send_password_reset_email
 
 SCAN_RANGE = 14
 PAST_RANGE = 1
@@ -358,6 +361,8 @@ def book_class(class_slot_id):
             )
             db.session.add(new_student)
             db.session.commit()
+            send_class_booking_email(new_student.name, new_student.email, class_slot)
+            flash('Check your email for booking request confirmation')
             return redirect(url_for('book_class', class_slot_id=class_slot_id))
         else:
             # Ideally this would be another page
@@ -403,3 +408,33 @@ def delete_student(student_id):
     db.session.delete(student)
     db.session.commit()
     return redirect(url_for('book_class', class_slot_id=class_slot_id))
+
+## Reset Password Request
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            send_password_reset_email(user)
+        flash('Check your email for the instructions to reset your password')
+        return redirect(url_for('login'))
+    return render_template('reset_password_request.html', title='Reset Password', form=form)
+
+## Reset Password
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    user = User.verify_reset_password_token(token)
+    if not user:
+        return redirect(url_for('index'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Your Password has been reset.')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', form=form)

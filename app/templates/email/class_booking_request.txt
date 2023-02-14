@@ -1,0 +1,11 @@
+Dear {{ student }},
+
+You have made a booking request for:
+
+{{ class_slot.class_name }} at {{ class_slot.time.strftime('%H:%M') }} on {{ class_slot.date.strftime('%d %b %Y %a') }}.
+
+Please pay in advance at https://sydneysabre.com/shop/ and await a confirmation email from us.
+
+Sincerely,
+
+Sydney Sabre
