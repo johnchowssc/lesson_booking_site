@@ -12,7 +12,7 @@ import os
 from itertools import groupby
 from flask_mail import Mail, Message
 from smtplib import SMTP
-from app.email import send_class_booking_email, send_password_reset_email
+from app.email import send_class_booking_email, send_password_reset_email, send_lesson_booking_email
 
 SCAN_RANGE = 14
 PAST_RANGE = 1
@@ -174,13 +174,16 @@ def book_slot(slot_id):
         slot.instructor = form.instructor.data
         slot.paid = form.paid.data
         db.session.commit()
+        if current_user.is_authenticated:
+            send_lesson_booking_email(current_user, slot)
         return redirect(url_for('index'))
-    # users = User.query.all()
-    # names = [ user.name for user in users]
-    # form.name.choices = names
     form.date.data = slot.date # Pre-populate date
     form.time.data = slot.time # Pre-populate time
-    form.name.data = slot.name # Pre-populate name
+    if current_user.is_authenticated:
+        if slot.name is None:
+            form.name.data = current_user.name # Pre-populate current user name
+        else:
+            form.name.data = slot.name # Pre-populate name
     form.comment.data = slot.comment # Pre-populate comment
     form.instructor.data = slot.instructor # Pre-populate comment
     form.paid.data = slot.paid # Pre-populate paid
@@ -367,6 +370,12 @@ def book_class(class_slot_id):
         else:
             # Ideally this would be another page
             return redirect(url_for('book_class', class_slot_id=class_slot_id))
+    if current_user.is_authenticated:
+            if current_user.is_admin:
+                pass
+            else:
+                form.name.data = current_user.name # Pre-populate current user name
+                form.email.data = current_user.email # Pre-populate current user name
     return render_template('class_slot.html', current_class=class_slot, form=form)
 
 ## Edit Student

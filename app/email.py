@@ -29,3 +29,11 @@ def send_password_reset_email(user):
         text_body=render_template('email/reset_password.txt', user=user, token=token),
         html_body=render_template('email/reset_password.html', user=user, token=token)
     )
+
+def send_lesson_booking_email(user, slot):
+    send_email('Booking Requested for ' + slot.name,
+        sender=app.config['ADMINS'][0],
+        recipients=[user.email, app.config['ADMINS'][0]],
+        text_body=render_template('email/lesson_booking_request.txt', user=user.name, slot=slot),
+        html_body=render_template('email/lesson_booking_request.html', user=user.name, slot=slot)
+    )

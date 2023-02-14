@@ -6,7 +6,7 @@ from datetime import datetime
 
 ## Configure forms
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
@@ -29,7 +29,7 @@ class BookingForm(FlaskForm):
 
 class RegisterUserForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
-    email = StringField("Email", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Register")
 
@@ -51,7 +51,7 @@ class ClassForm(FlaskForm):
 
 class BookingClassForm(FlaskForm):
     name = StringField("Student Name", validators=[DataRequired()])
-    email = StringField("Student Email", validators=[DataRequired()])
+    email = StringField("Student Email", validators=[DataRequired(), Email()])
     mobile = StringField("Student Mobile", validators=[DataRequired()])
     paid = BooleanField("Paid", default=False, validators=[])
     submit = SubmitField("Add Student")

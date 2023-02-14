@@ -57,7 +57,7 @@ class Slot(db.Model):
     comment = db.Column(db.String(500), nullable=True)
     paid = db.Column(db.Boolean, default=False, nullable=True)
     completed = db.Column(db.Boolean, default=False, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
 
     def __repr__(self):
         return '<Slot {}>'.format(self.name)
