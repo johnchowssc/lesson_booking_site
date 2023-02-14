@@ -11,7 +11,6 @@ from flask_mail import Mail
 app = Flask(__name__)
 app.config.from_object(Config) # Used to import 'SECRET_KEY' from config file for CSRF.
 login = LoginManager(app)
-mail = Mail(app)
 
 convention = {
     "ix": 'ix_%(column_0_label)s',
@@ -28,6 +27,8 @@ migrate = Migrate(app, db, render_as_batch=True)
 db.create_all()
 
 admin = Admin(app, name='Sydney Sabre', template_mode='bootstrap3')
+
+mail = Mail(app)
 
 from app import routes, models
 

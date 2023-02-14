@@ -1,7 +1,7 @@
 import datetime
 from sqlite3 import Date
 from flask import render_template, request, flash, redirect, url_for, send_from_directory, abort
-from app import app, db
+from app import app, db, mail
 from app.forms import BookingClassForm, LoginForm, SlotForm, BookingForm, RegisterUserForm, SlotsForm, ClassForm, ResetPasswordRequestForm, ResetPasswordForm
 from app.models import User, Slot, ClassSlot, Student
 from werkzeug.security import generate_password_hash, check_password_hash
