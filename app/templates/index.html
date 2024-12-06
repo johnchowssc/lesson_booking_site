@@ -60,6 +60,12 @@ Sydney Sabre Lessons Week of {{ today.strftime('%d %b %Y') }}
                                     ✓
                                 </a>
                             </div>
+                            <div class="flex">
+                                <a class="bg-gray-800 hover:bg-gray-200 text-white font-bold mx-2 px-3 py-2 rounded"   
+                                    href="{{url_for('toggle_duplicate_slot', slot_id=time.id) }}">
+                                    II
+                                </a>
+                            </div>
                         </div>
                     {% else %}
                         <div class="flex ml-12 mr-auto my-4 w-3/4 md:w-1/2 lg:w-1/2">

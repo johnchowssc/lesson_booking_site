@@ -259,6 +259,22 @@ def toggle_clear_slot(slot_id):
     db.session.commit()
     return redirect(url_for('show_date', date=slot.date))
 
+## Duplicate Slot for next week
+@app.route('/toggle_duplicate_slot/<slot_id>')
+@admin_only
+def toggle_duplicate_slot(slot_id):
+    slot_old = Slot.query.get(slot_id)
+    # slot.user.id = None
+    new_slot = Slot(
+            date = slot_old.date + datetime.timedelta(days=7),
+            time = slot_old.time,
+            name = slot_old.name,
+            instructor = slot_old.instructor,
+        )
+    db.session.add(new_slot)
+    db.session.commit()
+    return redirect(url_for('show_date', date=slot_old.date))
+
 ## Show All Classes
 @app.route('/all_classes')
 def show_all_classes():
