@@ -14,8 +14,20 @@ class LoginForm(FlaskForm):
 class SlotForm(FlaskForm):
     date = DateField("Slot Date", format='%Y-%m-%d', default=datetime.now(), validators=[DataRequired()])
     time = TimeField("Slot Time", format='%H:%M', default=datetime.now(), validators=[DataRequired()])
+    name = StringField("Name", validators=[])
+    comment = TextAreaField("Comment", validators=[])
     instructor = StringField("Instructor", validators=[DataRequired()])
+    paid = BooleanField("Paid", default=False, validators=[])
+    completed = BooleanField("Completed", default=False, validators=[])
     submit = SubmitField("Create")
+
+class SlotsForm(FlaskForm):
+    date = DateField("Slot Date", format='%Y-%m-%d', default=datetime.now(), validators=[DataRequired()])
+    start_time = SelectField("Start Time (24H)", choices=range(24), validators=[DataRequired()])
+    end_time = SelectField("End Time (24H)", choices=range(24), validators=[DataRequired()])
+    interval = SelectField("Interval (Hours)", choices=range(1,5), validators=[DataRequired()])
+    instructor = StringField("Instructor", validators=[DataRequired()])
+    submit = SubmitField("Create")    
 
 class BookingForm(FlaskForm):
     date = DateField("Slot Date", format='%Y-%m-%d', default=datetime.now(), validators=[DataRequired()])
@@ -32,14 +44,6 @@ class RegisterUserForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Register")
-
-class SlotsForm(FlaskForm):
-    date = DateField("Slot Date", format='%Y-%m-%d', default=datetime.now(), validators=[DataRequired()])
-    start_time = SelectField("Start Time (24H)", choices=range(24), validators=[DataRequired()])
-    end_time = SelectField("End Time (24H)", choices=range(24), validators=[DataRequired()])
-    interval = SelectField("Interval (Hours)", choices=range(1,5), validators=[DataRequired()])
-    instructor = StringField("Instructor", validators=[DataRequired()])
-    submit = SubmitField("Create")
 
 class ClassForm(FlaskForm):
     date = DateField("Slot Date", format='%Y-%m-%d', default=datetime.now(), validators=[DataRequired()])

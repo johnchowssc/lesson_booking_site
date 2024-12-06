@@ -154,7 +154,10 @@ def create_slot():
         new_slot = Slot(
             date = form.date.data,
             time = form.time.data,
-            instructor = form.instructor.data
+            name = form.name.data,
+            comment = form.comment.data,
+            instructor = form.instructor.data,
+            paid = form.paid.data
         )
         db.session.add(new_slot)
         db.session.commit()

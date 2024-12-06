@@ -34,6 +34,28 @@ Create Slot
             </div>
             <div class="my-2">
                 <p class="text-white">
+                    {{ form.name.label }}
+                </p>
+                <p>
+                    {{ form.name }}
+                </p>
+                {% for error in form.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="my-2">
+                <p class="text-white">
+                    {{ form.comment.label }}
+                </p>
+                <p>
+                    {{ form.comment }}
+                </p>
+                {% for error in form.comment.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="my-2">
+                <p class="text-white">
                     {{ form.instructor.label }}
                 </p>
                 <p>
@@ -43,6 +65,11 @@ Create Slot
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
               </div>
+              <div class="my-2">
+                <p class="text-white">
+                    {{ form.paid.label }} {{ form.paid }}
+                </p>
+            </div>
             <button class="bg-blue-400 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded">{{ form.submit() }}</button>
         </form>
     </div>
