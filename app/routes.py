@@ -17,6 +17,7 @@ from app.email import send_class_booking_email, send_password_reset_email, send_
 SCAN_RANGE = 30
 PAST_RANGE = 1
 PREV_RANGE = 7
+PREV_CLASS_RANGE = 150 #Use this so that you can see the previous term of classes. 
 
 def admin_only(function):
     wraps(function)
@@ -292,7 +293,7 @@ def show_all_classes():
 @app.route('/classes')
 def show_classes():
     date = datetime.date.today()
-    date_prev_range = date - datetime.timedelta(days=PREV_RANGE)
+    date_prev_range = date - datetime.timedelta(days=PREV_CLASS_RANGE)
     classes = ClassSlot.query.filter(ClassSlot.date > date_prev_range) #Show slots after previous range date.
     classes = sorted(classes, key=lambda slot: slot.time) # Sort by time
     classes = sorted(classes, key=lambda slot: slot.date) # Then sort by date
