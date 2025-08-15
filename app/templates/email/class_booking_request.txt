@@ -1,10 +1,10 @@
 Dear {{ student }},
 
-You have made a booking request for:
+You have been placed on the booking list for:
 
 {{ class_slot.class_name }} at {{ class_slot.time.strftime('%H:%M') }} on {{ class_slot.date.strftime('%d %b %Y %a') }}.
 
-Please pay in advance at https://sydneysabre.com/shop/ and await a confirmation email from us.
+If you have already paid, thank you! If you haven't, please confirm your spot by paying in advance at https://sydneysabre.com/shop/ and await a confirmation email from us.
 
 Sincerely,
 
