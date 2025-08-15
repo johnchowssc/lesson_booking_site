@@ -1,6 +1,6 @@
 Dear {{ user }},
 
-    You have requested a private lesson for {{ slot.name }} with {{ slot.instructor }} on {{ slot.date.strftime('%d %b %Y %a') }} at {{ slot.time.strftime('%H:%M') }}.
+You have requested a private lesson for {{ slot.name }} with {{ slot.instructor }} on {{ slot.date.strftime('%d %b %Y %a') }} at {{ slot.time.strftime('%H:%M') }}.
 
 If you don't already have a lesson pass, please confirm your spot by paying in advance at https://sydneysabre.com/shop/ and await a confirmation email from us.
 

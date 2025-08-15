@@ -1,9 +1,8 @@
 <p>Dear {{ user }},</p>
 <p>
-    You have made a lesson request for:
+You have requested a private lesson for {{ slot.name }} with {{ slot.instructor }} on {{ slot.date.strftime('%d %b %Y %a') }} at {{ slot.time.strftime('%H:%M') }}.
 </p>
-<p>{{ slot.name }} at {{ slot.time.strftime('%H:%M') }} on {{ slot.date.strftime('%d %b %Y %a') }} with {{ slot.instructor }}. Comment: {{ slot.comment }}</p>
-<p>Please pay in advance (if you haven't already) at: </p>
+<p>If you don't already have a lesson pass, please confirm your spot by paying in advance at: </p>
 <a href="https://sydneysabre.com/shop/">the Sydney Sabre Shop</a>
 <p>and await a confirmation email from us.</p>
 <p>Sincerely,</p>
