@@ -411,7 +411,7 @@ def edit_student(student_id):
             mobile = form.mobile.data,
             paid = form.paid.data,
             parent_id = student.parent_id,
-            user_id = student.id
+            user_id = current_user.id
         )
         student.name = new_student.name
         student.email = new_student.email
