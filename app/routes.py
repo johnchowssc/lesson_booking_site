@@ -470,7 +470,7 @@ def reset_password(token):
 
 ## Edit Student if Self
 @app.route('/edit_student_self/<student_id>', methods=['GET','POST'])
-def edit_student(student_id):
+def edit_student_self(student_id):
     form = BookingClassForm()
     student = Student.query.get(student_id)
     if form.validate_on_submit():
@@ -499,7 +499,7 @@ def edit_student(student_id):
 
 ## Delete Student if Self in class
 @app.route('/delete_student_self/<student_id>')
-def delete_student(student_id):
+def delete_student_self(student_id):
     student = Student.query.get(student_id)
     class_slot_id = student.parent_id
     db.session.delete(student)
