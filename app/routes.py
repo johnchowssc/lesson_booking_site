@@ -467,3 +467,41 @@ def reset_password(token):
         flash('Your Password has been reset.')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+## Edit Student if Self
+@app.route('/edit_student_self/<student_id>', methods=['GET','POST'])
+def edit_student(student_id):
+    form = BookingClassForm()
+    student = Student.query.get(student_id)
+    if form.validate_on_submit():
+        new_student = Student(
+            name = form.name.data,
+            email = form.email.data,
+            mobile = form.mobile.data,
+            paid = student.paid.data,
+            parent_id = student.parent_id,
+            user_id = current_user.id
+        )
+        student.name = new_student.name
+        student.email = new_student.email
+        student.mobile = new_student.mobile
+        student.paid = new_student.paid
+        student.parent_id = new_student.parent_id
+        student.user_id = new_student.user_id
+        db.session.commit()
+        return redirect(url_for('book_class', class_slot_id=student.parent_id))
+    ## Prepopulate values in form
+    form.name.data = student.name
+    form.email.data = student.email
+    form.mobile.data = student.mobile
+    form.paid.data = student.paid
+    return render_template('edit_student.html', form=form)
+
+## Delete Student if Self in class
+@app.route('/delete_student_self/<student_id>')
+def delete_student(student_id):
+    student = Student.query.get(student_id)
+    class_slot_id = student.parent_id
+    db.session.delete(student)
+    db.session.commit()
+    return redirect(url_for('book_class', class_slot_id=class_slot_id))
