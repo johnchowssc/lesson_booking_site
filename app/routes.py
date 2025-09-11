@@ -488,7 +488,7 @@ def edit_student_self(student_id):
         student.paid = new_student.paid
         student.parent_id = new_student.parent_id
         #student.user_id = new_student.user_id
-        db.session.commit()
+        #db.session.commit()
         return redirect(url_for('book_class', class_slot_id=student.parent_id))
     ## Prepopulate values in form
     form.name.data = student.name
