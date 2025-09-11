@@ -17,7 +17,7 @@ from app.email import send_class_booking_email, send_password_reset_email, send_
 SCAN_RANGE = 30
 PAST_RANGE = 1
 PREV_RANGE = 7
-PREV_CLASS_RANGE = 150 #Use this so that you can see the previous term of classes. 
+PREV_CLASS_RANGE = 70 #Use this so that you can see the previous term of classes. 
 
 def admin_only(function):
     wraps(function)
