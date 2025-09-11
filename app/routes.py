@@ -483,7 +483,6 @@ def edit_student_self(student_id):
             user_id = current_user.id
         )
         db.session.delete(student)
-        db.session.add(new_student)
         db.session.commit()
         return redirect(url_for('book_class', class_slot_id=new_student.parent_id))
     ## Prepopulate values in form
