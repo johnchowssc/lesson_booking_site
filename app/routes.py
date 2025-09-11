@@ -400,7 +400,7 @@ def book_class(class_slot_id):
 
 ## Edit Student
 @app.route('/edit_student/<student_id>', methods=['GET','POST'])
-@admin_only
+## @admin_only
 def edit_student(student_id):
     form = BookingClassForm()
     student = Student.query.get(student_id)
