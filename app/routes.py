@@ -473,24 +473,10 @@ def reset_password(token):
 def edit_student_self(student_id):
     form = BookingClassForm()
     student = Student.query.get(student_id)
-    if form.validate_on_submit():
-        new_student = Student(
-            name = form.name.data,
-            email = form.email.data,
-            mobile = form.mobile.data,
-            paid = student.paid.data,
-            parent_id = student.parent_id,
-            user_id = current_user.id
-        )
-        db.session.delete(student)
-        db.session.commit()
-        return redirect(url_for('book_class', class_slot_id=new_student.parent_id))
-    ## Prepopulate values in form
-    form.name.data = student.name
-    form.email.data = student.email
-    form.mobile.data = student.mobile
-    form.paid.data = student.paid
-    return render_template('edit_student.html', form=form)
+    class_slot_id = student.parent_id
+    db.session.delete(student)
+    db.session.commit()
+    return redirect(url_for('book_class', class_slot_id=class_slot_id))
 
 ## Delete Student if Self in class
 @app.route('/delete_student_self/<student_id>')
