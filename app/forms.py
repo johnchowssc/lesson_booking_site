@@ -2,10 +2,10 @@ from email.policy import default
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, TimeField, SelectField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo
-from datetime import datetime
-import os
+from datetime import datetime, timezone
+import pytz
 
-os.environ['TZ'] = 'Australia/Sydney'
+tz = pytz.timezone('Australia/Sydney')
 
 ## Configure forms
 class LoginForm(FlaskForm):
@@ -16,7 +16,7 @@ class LoginForm(FlaskForm):
 
 class SlotForm(FlaskForm):
     date = DateField("Slot Date", format='%Y-%m-%d', default=datetime.now(), validators=[DataRequired()])
-    time = TimeField("Slot Time", format='%H:%M', default=datetime.now(), validators=[DataRequired()])
+    time = TimeField("Slot Time", format='%H:%M', default=datetime.now().astimezone(tz), validators=[DataRequired()])
     name = StringField("Name", validators=[])
     comment = TextAreaField("Comment", validators=[])
     instructor = StringField("Instructor", validators=[DataRequired()])
