@@ -3,6 +3,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, TimeField, SelectField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo
 from datetime import datetime
+import os
+
+os.environ['TZ'] = 'Australia/Sydney'
 
 ## Configure forms
 class LoginForm(FlaskForm):
