@@ -14,7 +14,10 @@ from flask_mail import Mail, Message
 from smtplib import SMTP
 from app.email import send_class_booking_email, send_password_reset_email, send_lesson_booking_email
 
+import os
+import time
 os.environ['TZ'] = 'Australia/Sydney'
+time.tzset()
 
 SCAN_RANGE = 30
 PAST_RANGE = 1
