@@ -17,7 +17,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class SlotForm(FlaskForm):
-    sydney_tz = pytz.timezone('Australia/Sydney')
     date = DateField("Slot Date",format='%Y-%m-%d',default=lambda: get_sydney_now().date(),validators=[DataRequired()])
     time = TimeField("Slot Time", format='%H:%M',default=lambda: get_sydney_now().time(),validators=[DataRequired()])
     name = StringField("Name", validators=[])
@@ -26,11 +25,9 @@ class SlotForm(FlaskForm):
     paid = BooleanField("Paid", default=False, validators=[])
     completed = BooleanField("Completed", default=False, validators=[])
     submit = SubmitField("Create")
-    print(date)
-    print(time)
 
 class SlotsForm(FlaskForm):
-    date = DateField("Slot Date", format='%Y-%m-%d', default=datetime.now(), validators=[DataRequired()])
+    date = DateField("Slot Date",format='%Y-%m-%d',default=lambda: get_sydney_now().date(),validators=[DataRequired()])
     start_time = SelectField("Start Time (24H)", choices=range(24), validators=[DataRequired()])
     end_time = SelectField("End Time (24H)", choices=range(24), validators=[DataRequired()])
     interval = SelectField("Interval (Hours)", choices=range(1,5), validators=[DataRequired()])
@@ -38,8 +35,8 @@ class SlotsForm(FlaskForm):
     submit = SubmitField("Create")    
 
 class BookingForm(FlaskForm):
-    date = DateField("Slot Date", format='%Y-%m-%d', default=datetime.now(), validators=[DataRequired()])
-    time = TimeField("Slot Time", format='%H:%M', default=datetime.now(), validators=[DataRequired()])
+    date = DateField("Slot Date",format='%Y-%m-%d',default=lambda: get_sydney_now().date(),validators=[DataRequired()])
+    time = TimeField("Slot Time", format='%H:%M',default=lambda: get_sydney_now().time(),validators=[DataRequired()])
     name = StringField("Name", validators=[DataRequired()])
     comment = TextAreaField("Comment", validators=[])
     instructor = StringField("Instructor", validators=[DataRequired()])
@@ -54,8 +51,8 @@ class RegisterUserForm(FlaskForm):
     submit = SubmitField("Register")
 
 class ClassForm(FlaskForm):
-    date = DateField("Slot Date", format='%Y-%m-%d', default=datetime.now(), validators=[DataRequired()])
-    time = TimeField("Slot Time", format='%H:%M', default=datetime.now(), validators=[DataRequired()])
+    date = DateField("Slot Date",format='%Y-%m-%d',default=lambda: get_sydney_now().date(),validators=[DataRequired()])
+    time = TimeField("Slot Time", format='%H:%M',default=lambda: get_sydney_now().time(),validators=[DataRequired()])
     class_name = StringField("Class Name", validators=[])
     class_description = TextAreaField("Description", validators=[])
     capacity = IntegerField("Class Capacity", default=6, validators=[DataRequired()])
