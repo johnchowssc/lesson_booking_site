@@ -13,6 +13,12 @@ from itertools import groupby
 from flask_mail import Mail, Message
 from smtplib import SMTP
 from app.email import send_class_booking_email, send_password_reset_email, send_lesson_booking_email
+from zoneinfo import ZoneInfo
+
+def now_sydney():
+    now_sydney = datetime.datetime.now().astimezone(ZoneInfo('Australia/Sydney'))
+    print(now_sydney)
+    return now_sydney
 
 SCAN_RANGE = 30
 PAST_RANGE = 1
@@ -150,6 +156,7 @@ def login():
 @app.route("/create", methods=["Get","POST"])
 @admin_only
 def create_slot():
+    now = now_sydney()
     form = SlotForm()
     if form.validate_on_submit():
         new_slot = Slot(
