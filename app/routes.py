@@ -191,7 +191,7 @@ def book_slot(slot_id):
         if not slot.optional_email:
             print("Slot email is empty")
         else:
-            send_optional_lesson_booking_email(slot, slot.optional_email)
+            send_optional_lesson_booking_email(current_user, slot)
             flash('Check your email for booking request confirmation')
         return redirect(url_for('index'))
     form.date.data = slot.date # Pre-populate date
@@ -202,7 +202,8 @@ def book_slot(slot_id):
         else:
             form.name.data = slot.name # Pre-populate name
         form.comment.data = slot.comment # Pre-populate comment
-        form.instructor.data = slot.instructor # Pre-populate comment
+        form.optional_email.data = slot.optional_email # Pre-populate optional_email
+        form.instructor.data = slot.instructor # Pre-populate instructor
         form.paid.data = slot.paid # Pre-populate paid
     return render_template('booking.html', form=form)
 
