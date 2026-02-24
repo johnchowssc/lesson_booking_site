@@ -16,7 +16,7 @@ def send_email(subject, sender, recipients, text_body, html_body):
 def send_class_booking_email(student, student_email, class_slot):
     send_email('Booking Requested for ' + student,
         sender=app.config['ADMINS'][0],
-        recipients=[student_email, app.config['ADMINS'][0]],
+        recipients=[student_email],
         text_body=render_template('email/class_booking_request.txt', student=student, class_slot=class_slot),
         html_body=render_template('email/class_booking_request.html', student=student, class_slot=class_slot)
     )
@@ -33,7 +33,7 @@ def send_password_reset_email(user):
 def send_lesson_booking_email(user, slot):
     send_email('Booking Requested for ' + slot.name,
         sender=app.config['ADMINS'][0],
-        recipients=[user.email, app.config['ADMINS'][0]],
+        recipients=[user.email],
         text_body=render_template('email/lesson_booking_request.txt', user=user.name, slot=slot),
         html_body=render_template('email/lesson_booking_request.html', user=user.name, slot=slot)
     )
@@ -41,7 +41,7 @@ def send_lesson_booking_email(user, slot):
 def send_optional_lesson_booking_email(slot, optional_email):
     send_email('Booking Requested for ' + slot.name,
         sender=app.config['ADMINS'][0],
-        recipients=[optional_email, app.config['ADMINS'][0]],
+        recipients=[optional_email],
         text_body=render_template('email/lesson_booking_request.txt', user=slot.name, slot=slot),
         html_body=render_template('email/lesson_booking_request.html', user=slot.name, slot=slot)
     )
