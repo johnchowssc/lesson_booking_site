@@ -38,6 +38,7 @@ class BookingForm(FlaskForm):
     date = DateField("Slot Date",format='%Y-%m-%d',default=lambda: get_sydney_now().date(),validators=[DataRequired()])
     time = TimeField("Slot Time", format='%H:%M',default=lambda: get_sydney_now().time(),validators=[DataRequired()])
     name = StringField("Name", validators=[DataRequired()])
+    optional_email = StringField("Optional Email", validators=[])
     comment = TextAreaField("Comment", validators=[])
     instructor = StringField("Instructor", validators=[DataRequired()])
     paid = BooleanField("Paid", default=False, validators=[])
@@ -60,8 +61,8 @@ class ClassForm(FlaskForm):
 
 class BookingClassForm(FlaskForm):
     name = StringField("Student Name", validators=[DataRequired()])
-    email = StringField("Student Email", validators=[DataRequired(), Email()])
-    mobile = StringField("Student Mobile", validators=[DataRequired()])
+    email = StringField("Student Email", validators=[])
+    mobile = StringField("Student Mobile", validators=[])
     paid = BooleanField("Paid", default=False, validators=[])
     submit = SubmitField("Add Student")
 

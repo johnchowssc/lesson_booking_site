@@ -54,6 +54,17 @@ Book Slot
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </div>
+            <div class="my-2">
+                <p class="text-white">
+                    {{ form.optional_email.label }}
+                </p>
+                <p>
+                    {{ form.optional_email }}
+                </p>
+                {% for error in form.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
             {% else %}
             <p hidden>
                 {{ form.date }} {{ form.time }} {{ form.name }} {{ form.instructor }}

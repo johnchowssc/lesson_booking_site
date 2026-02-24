@@ -12,7 +12,7 @@ import os
 from itertools import groupby
 from flask_mail import Mail, Message
 from smtplib import SMTP
-from app.email import send_class_booking_email, send_password_reset_email, send_lesson_booking_email
+from app.email import send_class_booking_email, send_password_reset_email, send_lesson_booking_email, send_optional_lesson_booking_email
 from zoneinfo import ZoneInfo
 
 def now_sydney():
@@ -181,12 +181,18 @@ def book_slot(slot_id):
         slot.date = form.date.data
         slot.time = form.time.data
         slot.name = form.name.data
+        slot.optional_email = form.optional_email.data
         slot.comment = form.comment.data
         slot.instructor = form.instructor.data
         slot.paid = form.paid.data
         db.session.commit()
         if current_user.is_authenticated:
             send_lesson_booking_email(current_user, slot)
+        if not slot.optional_email:
+            print("Slot email is empty")
+        else:
+            send_optional_lesson_booking_email(slot, slot.optional_email)
+            flash('Check your email for booking request confirmation')
         return redirect(url_for('index'))
     form.date.data = slot.date # Pre-populate date
     form.time.data = slot.time # Pre-populate time
@@ -195,9 +201,9 @@ def book_slot(slot_id):
             form.name.data = current_user.name # Pre-populate current user name
         else:
             form.name.data = slot.name # Pre-populate name
-    form.comment.data = slot.comment # Pre-populate comment
-    form.instructor.data = slot.instructor # Pre-populate comment
-    form.paid.data = slot.paid # Pre-populate paid
+        form.comment.data = slot.comment # Pre-populate comment
+        form.instructor.data = slot.instructor # Pre-populate comment
+        form.paid.data = slot.paid # Pre-populate paid
     return render_template('booking.html', form=form)
 
 ## Logout user
@@ -391,8 +397,11 @@ def book_class(class_slot_id):
             )
             db.session.add(new_student)
             db.session.commit()
-            send_class_booking_email(new_student.name, new_student.email, class_slot)
-            flash('Check your email for booking request confirmation')
+            if not new_student.email:
+                print("email is empty")
+            else:
+                send_class_booking_email(new_student.name, new_student.email, class_slot)
+                flash('Check your email for booking request confirmation')
             return redirect(url_for('book_class', class_slot_id=class_slot_id))
         else:
             # Ideally this would be another page

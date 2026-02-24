@@ -37,3 +37,11 @@ def send_lesson_booking_email(user, slot):
         text_body=render_template('email/lesson_booking_request.txt', user=user.name, slot=slot),
         html_body=render_template('email/lesson_booking_request.html', user=user.name, slot=slot)
     )
+
+def send_optional_lesson_booking_email(slot, optional_email):
+    send_email('Booking Requested for ' + slot.name,
+        sender=app.config['ADMINS'][0],
+        recipients=[optional_email, app.config['ADMINS'][0]],
+        text_body=render_template('email/lesson_booking_request.txt', user=slot.name, slot=slot),
+        html_body=render_template('email/lesson_booking_request.html', user=slot.name, slot=slot)
+    )
