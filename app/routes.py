@@ -283,6 +283,8 @@ def toggle_duplicate_slot(slot_id):
             date = slot_old.date + datetime.timedelta(days=7),
             time = slot_old.time,
             name = slot_old.name,
+            optional_email = slot_old.optional_email,
+            comment = slot_old.comment,
             instructor = slot_old.instructor,
         )
     db.session.add(new_slot)
