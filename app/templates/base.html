@@ -42,6 +42,17 @@
                     href="{{url_for('create_class')}}">
                     Create Class
                 </a>
+                <select 
+                    class="bg-gray-800 text-gray-400 hover:text-white px-1 mt-4 sm:mt-0"
+                    onchange="if(this.value) window.location.href=this.value">
+                    <option value="">Select Instructor</option>
+                    <option value="{{ url_for('show_instructor', instructor='John') }}">John</option>
+                    <option value="{{ url_for('show_instructor', instructor='Frances') }}">Frances</option>
+                    <option value="{{ url_for('show_instructor', instructor='Hamish') }}">Hamish</option>
+                    <option value="{{ url_for('show_instructor', instructor='Isobel') }}">Isobel</option>
+                    <option value="{{ url_for('show_instructor', instructor='Tim') }}">Tim</option>
+                    <option value="{{ url_for('show_instructor', instructor='Tom') }}">Tom</option>
+                </select>
                 <a  
                     class="text-gray-400 hover:text-white block mt-4 sm:inline-block sm:mt-0 px-1" 
                     href="{{url_for('show_all_classes')}}">

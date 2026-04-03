@@ -94,6 +94,28 @@ def show_date(date):
         slots_by_date_instructor.append(slots_by_instructor)
     return render_template('index.html', all_slots=slots_by_date_instructor, today=date, next_date=date_plus_range, prev_date=date_minus_range, prior_date=date_prev_range)
 
+# Show all future lessons for instructor
+@app.route('/instructor/<instructor>', methods=['GET'])
+def show_instructor(instructor):
+    instructor = str(instructor)
+    date = datetime.date.today()
+    date_plus_range = date + datetime.timedelta(days=SCAN_RANGE)
+    date_minus_range = date - datetime.timedelta(days=PAST_RANGE)
+    date_prev_range = date - datetime.timedelta(days=PREV_RANGE)
+    slots = Slot.query.filter(and_(Slot.date >= date, Slot.instructor == instructor)) #Show instructor slots on current date and future dates
+    slots = sorted(slots, key=lambda slot: slot.time) # Sort by time
+    slots = sorted(slots, key=lambda slot: slot.date) # Then sort by date
+    slots_by_date = []
+    for k, g in groupby(slots, key=lambda slot: slot.date):
+        slots_by_date.append(list(g))
+    slots_by_date_instructor = []
+    for slots_in_date in slots_by_date:
+        slots_by_instructor = []
+        for k, g in groupby(slots_in_date, key= lambda slot_in_day: slot_in_day.instructor):
+            slots_by_instructor.append(list(g))
+        slots_by_date_instructor.append(slots_by_instructor)
+    return render_template('index.html', all_slots=slots_by_date_instructor, today=date, next_date=date_plus_range, prev_date=date_minus_range, prior_date=date_prev_range)
+
 ## Show all lessons dates route
 @app.route('/all_lessons', methods=['GET'])
 def show_all_lessons():
