@@ -215,7 +215,7 @@ def book_slot(slot_id):
         else:
             send_optional_lesson_booking_email(current_user, slot)
             flash('Check your email for booking request confirmation')
-        return redirect(url_for('index'))
+        return redirect(url_for('show_date', date=slot.date))
     form.date.data = slot.date # Pre-populate date
     form.time.data = slot.time # Pre-populate time
     if current_user.is_authenticated:
