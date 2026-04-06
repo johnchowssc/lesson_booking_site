@@ -81,7 +81,7 @@ def show_date(date):
     # date_minus_range = date - datetime.timedelta(days=SCAN_RANGE)
     slots = Slot.query.filter(and_(Slot.date < date_plus_range, Slot.date > date_minus_range)) #Show slots on current date +/- range days.
     slots = sorted(slots, key=lambda slot: slot.time) # Sort by time
-    slots = sorted(slots, key=lambda slot: slot.instructor) #Sort by instructor 
+    slots = sorted(slots, key=lambda slot: slot.instructor.strip()) #Sort by instructor, using strip() to remove leading and trailing spaces
     slots = sorted(slots, key=lambda slot: slot.date) # Then sort by date
     slots_by_date = []
     for k, g in groupby(slots, key=lambda slot: slot.date):
@@ -97,7 +97,8 @@ def show_date(date):
 # Show all future lessons for instructor
 @app.route('/instructor/<instructor>', methods=['GET'])
 def show_instructor(instructor):
-    instructor = str(instructor)
+    instructor = str(instructor) #read instructor input as a string
+    instructor = instructor.strip() #strip leading and trailing spaces
     date = datetime.date.today()
     date_plus_range = date + datetime.timedelta(days=SCAN_RANGE)
     date_minus_range = date - datetime.timedelta(days=PAST_RANGE)
@@ -186,7 +187,7 @@ def create_slot():
             time = form.time.data,
             name = form.name.data,
             comment = form.comment.data,
-            instructor = form.instructor.data,
+            instructor = form.instructor.data.strip(),
             paid = form.paid.data
         )
         db.session.add(new_slot)
@@ -205,7 +206,7 @@ def book_slot(slot_id):
         slot.name = form.name.data
         slot.optional_email = form.optional_email.data
         slot.comment = form.comment.data
-        slot.instructor = form.instructor.data
+        slot.instructor = form.instructor.data.strip()
         slot.paid = form.paid.data
         db.session.commit()
         if current_user.is_authenticated:
@@ -258,7 +259,7 @@ def create_slots():
             new_slot = Slot(
                 date = form.date.data,
                 time = time,
-                instructor = form.instructor.data
+                instructor = form.instructor.data.strip()
             )
             db.session.add(new_slot)
         db.session.commit()
