@@ -2,6 +2,9 @@
 <p>
 You have requested a private lesson for {{ slot.name }} with {{ slot.instructor }} on {{ slot.date.strftime('%d %b %Y %a') }} at {{ slot.time.strftime('%H:%M') }}.
 </p>
+<p>
+Payment status is: {{ slot.paid }}
+</p>
 <p>If you don't already have a lesson pass, please confirm your spot by paying in advance at: </p>
 <a href="https://sydneysabre.com/shop/">the Sydney Sabre Shop</a>
 <p>and await a confirmation email from us.</p>

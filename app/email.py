@@ -13,10 +13,10 @@ def send_email(subject, sender, recipients, text_body, html_body):
     msg.html = html_body
     Thread(target=send_async_email, args=(app, msg)).start()
 
-def send_class_booking_email(student, student_email, class_slot):
-    send_email('Booking Requested for ' + student,
+def send_class_booking_email(student, class_slot):
+    send_email('Booking Requested for ' + student.name,
         sender=app.config['ADMINS'][0],
-        recipients=[student_email],
+        recipients=[student.email],
         text_body=render_template('email/class_booking_request.txt', student=student, class_slot=class_slot),
         html_body=render_template('email/class_booking_request.html', student=student, class_slot=class_slot)
     )

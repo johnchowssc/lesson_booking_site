@@ -426,7 +426,7 @@ def book_class(class_slot_id):
             if not new_student.email:
                 print("email is empty")
             else:
-                send_class_booking_email(new_student.name, new_student.email, class_slot)
+                send_class_booking_email(new_student, class_slot)
                 flash('Check your email for booking request confirmation')
             return redirect(url_for('book_class', class_slot_id=class_slot_id))
         else:
@@ -467,7 +467,7 @@ def edit_student(student_id):
         if not new_student.email:
                 print("email is empty")
         else:
-            send_class_booking_email(new_student.name, new_student.email, class_slot)
+            send_class_booking_email(new_student, class_slot)
             flash('Check your email for booking request confirmation')
         return redirect(url_for('book_class', class_slot_id=class_slot_id))
     ## Prepopulate values in form
