@@ -446,6 +446,8 @@ def book_class(class_slot_id):
 def edit_student(student_id):
     form = BookingClassForm()
     student = Student.query.get(student_id)
+    class_slot_id = student.parent_id
+    class_slot = ClassSlot.query.get(class_slot_id)
     if form.validate_on_submit():
         new_student = Student(
             name = form.name.data,
@@ -462,7 +464,12 @@ def edit_student(student_id):
         student.parent_id = new_student.parent_id
         student.id = new_student.user_id
         db.session.commit()
-        return redirect(url_for('book_class', class_slot_id=student.parent_id))
+        if not new_student.email:
+                print("email is empty")
+        else:
+            send_class_booking_email(new_student.name, new_student.email, class_slot)
+            flash('Check your email for booking request confirmation')
+        return redirect(url_for('book_class', class_slot_id=class_slot_id))
     ## Prepopulate values in form
     form.name.data = student.name
     form.email.data = student.email
