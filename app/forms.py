@@ -40,6 +40,7 @@ class BookingForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
     optional_email = StringField("Optional Email", validators=[])
     optional_email2 = StringField("Optional Email 2", validators=[])
+    bcc_email = StringField("BCC email", validators=[])
     comment = TextAreaField("Comment", validators=[])
     instructor = StringField("Instructor", validators=[DataRequired()])
     paid = BooleanField("Paid", default=False, validators=[])

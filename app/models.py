@@ -55,6 +55,7 @@ class Slot(db.Model):
     name = db.Column(db.String(250), nullable=True)
     optional_email = db.Column(db.String(250), nullable=True)
     optional_email2 = db.Column(db.String(250), nullable=True)
+    bcc_email = db.Column(db.String(250), nullable=True)
     instructor = db.Column(db.String(250), nullable=False)
     comment = db.Column(db.String(500), nullable=True)
     paid = db.Column(db.Boolean, default=False, nullable=True)

@@ -7,8 +7,8 @@ def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
 
-def send_email(subject, sender, recipients, text_body, html_body):
-    msg = Message(subject, sender=sender, recipients=recipients)
+def send_email(subject, sender, recipients, text_body, html_body, bcc=None):
+    msg = Message(subject, sender=sender, recipients=recipients, bcc=bcc)
     msg.body = text_body
     msg.html = html_body
     Thread(target=send_async_email, args=(app, msg)).start()
@@ -40,8 +40,8 @@ def send_lesson_booking_email(user, slot):
 
 def send_optional_lesson_booking_email(user, slot):
 
-    print("optional_email  =", repr(slot.optional_email))
-    print("optional_email2 =", repr(slot.optional_email2))
+    # print("optional_email  =", repr(slot.optional_email))
+    # print("optional_email2 =", repr(slot.optional_email2))
     
     recipients = [
         e.strip()
@@ -49,10 +49,19 @@ def send_optional_lesson_booking_email(user, slot):
         if e and e.strip()
     ]
     print("Recipients: ", recipients)
+    
+    bcc_list = [
+        e.strip()
+        for e in [slot.bcc_email]
+        if e and e.strip()
+    ]
+
+    print("BCC: ", bcc_list)
 
     send_email('Booking Requested for ' + slot.name,
         sender=app.config['ADMINS'][0],
-        recipients=recipients,
+        recipients=recipients, #visible recipients
+        bcc=bcc_list, #hidden recipients
         text_body=render_template('email/lesson_booking_request.txt', user=user.name, slot=slot),
         html_body=render_template('email/lesson_booking_request.html', user=user.name, slot=slot)
     )
