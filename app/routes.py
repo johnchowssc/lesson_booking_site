@@ -205,13 +205,14 @@ def book_slot(slot_id):
         slot.time = form.time.data
         slot.name = form.name.data
         slot.optional_email = form.optional_email.data
+        slot.optional_email2 = form.optional_email2.data
         slot.comment = form.comment.data
         slot.instructor = form.instructor.data.strip()
         slot.paid = form.paid.data
         db.session.commit()
         if current_user.is_authenticated:
             send_lesson_booking_email(current_user, slot)
-        if not slot.optional_email:
+        if not slot.optional_email and not slot.optional_email2:
             print("Slot email is empty")
         else:
             send_optional_lesson_booking_email(current_user, slot)
@@ -226,6 +227,7 @@ def book_slot(slot_id):
             form.name.data = slot.name # Pre-populate name
         form.comment.data = slot.comment # Pre-populate comment
         form.optional_email.data = slot.optional_email # Pre-populate optional_email
+        form.optional_email2.data = slot.optional_email2 # Pre-populate optional_email2
         form.instructor.data = slot.instructor # Pre-populate instructor
         form.paid.data = slot.paid # Pre-populate paid
     return render_template('booking.html', form=form)
@@ -308,6 +310,7 @@ def toggle_duplicate_slot(slot_id):
             time = slot_old.time,
             name = slot_old.name,
             optional_email = slot_old.optional_email,
+            optional_email2 = slot_old.optional_email2,
             comment = slot_old.comment,
             instructor = slot_old.instructor,
         )

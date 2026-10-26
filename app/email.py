@@ -39,9 +39,20 @@ def send_lesson_booking_email(user, slot):
     )
 
 def send_optional_lesson_booking_email(user, slot):
+
+    print("optional_email  =", repr(slot.optional_email))
+    print("optional_email2 =", repr(slot.optional_email2))
+    
+    recipients = [
+        e.strip()
+        for e in [slot.optional_email, slot.optional_email2]
+        if e and e.strip()
+    ]
+    print("Recipients: ", recipients)
+
     send_email('Booking Requested for ' + slot.name,
         sender=app.config['ADMINS'][0],
-        recipients=[slot.optional_email],
+        recipients=recipients,
         text_body=render_template('email/lesson_booking_request.txt', user=user.name, slot=slot),
         html_body=render_template('email/lesson_booking_request.html', user=user.name, slot=slot)
     )
